@@ -13,27 +13,31 @@ import { useWindowDimensions } from "react-native";
 
 import SearchBar from "../components/SearchBar";
 
-export default function Home({ navigation: { navigate } }) {
-  const [products, setProducts] = useState([]);
-  const [fullData, setFullData] = useState([]);
-  const { height: ht, width: wt } = useWindowDimensions();
+export default function Home({ navigation: { navigate }, route }) {
+  console.log("from route", route.params.products);
+  const { products, setProducts } = route.params;
+  // console.log("from Home", products);
+  // const [products, setProducts] = useState([]);
+  const [fullData, setFullData] = useState(products);
 
-  function fetchProducts() {
-    axios
-      .get(`${baseURL}/store/products`)
-      .then((res) => {
-        // console.log(res.data.products);
-        setProducts(res.data.products);
-        setFullData(res.data.products);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
+  console.log(products);
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  // function fetchProducts() {
+  //   axios
+  //     .get(`${baseURL}/store/products`)
+  //     .then((res) => {
+  //       // console.log(res.data.products);
+  //       setProducts(res.data.products);
+  //       setFullData(res.data.products);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // }
+
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, []);
 
   return (
     <View style={styles.container}>
