@@ -1,49 +1,25 @@
 import { StyleSheet, View, Pressable, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import axios from "axios";
-import Header from "../components/Header";
-import Banner from "../components/Banner";
-import baseURL from "../constants/url";
-import { useWindowDimensions } from "react-native";
+import Header from "../components/home/Header";
+import Banner from "../components/home/Banner";
+import { useStoreContext } from "../globalstore/Store";
+import SearchBar from "../components/home/SearchBar";
+import EmptyCard from "../components/EmptyCard";
 
-import SearchBar from "../components/SearchBar";
+export default function Home({ navigation: { navigate } }) {
+  const { state } = useStoreContext();
+  const [products, setProducts] = useState(state.products);
 
-export default function Home({ navigation: { navigate }, route }) {
-  console.log("from route", route.params.products);
-  const { products, setProducts } = route.params;
-  // console.log("from Home", products);
-  // const [products, setProducts] = useState([]);
-  const [fullData, setFullData] = useState(products);
+  // const [clicked, setClicked] = useState(false);
 
-  console.log(products);
-
-  // function fetchProducts() {
-  //   axios
-  //     .get(`${baseURL}/store/products`)
-  //     .then((res) => {
-  //       // console.log(res.data.products);
-  //       setProducts(res.data.products);
-  //       setFullData(res.data.products);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // }
-
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, []);
+  // console.log(state.products, "This is full data");
 
   return (
     <View style={styles.container}>
       <Header title="365 Store" />
       <Banner />
-      <SearchBar setProducts={setProducts} fullData={fullData} />
+      <SearchBar setProducts={setProducts} products={products} />
 
       <FlatList
         style={styles.list}
@@ -53,7 +29,7 @@ export default function Home({ navigation: { navigate }, route }) {
             <Pressable
               key={item.id}
               onPress={() => {
-                console.log(item.id);
+                // console.log(item.id);
                 navigate("Product", {
                   productId: item.id,
                 });
@@ -63,7 +39,7 @@ export default function Home({ navigation: { navigate }, route }) {
             </Pressable>
           );
         }}
-        keyExtractor={(product) => product.id}
+        keyExtractor={(item) => item.id}
       />
     </View>
   );

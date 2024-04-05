@@ -5,8 +5,9 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Button from "./Button";
+import { memo } from "react";
 
-export default function ProductCard({ product }) {
+function ProductCard({ product }) {
   return (
     <View style={styles.container} key={product.id}>
       <Image
@@ -70,3 +71,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+export default memo(ProductCard);
