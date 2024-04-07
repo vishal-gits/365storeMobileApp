@@ -2,13 +2,13 @@ import { View, Text, ScrollView, StyleSheet, Pressable } from "react-native";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Images from "../components/ProductInfo/Image";
+import Images from "../components/productInfo/Image";
 import baseURL from "../constants/url";
-import MetaInfo from "../components/ProductInfo/MetaInfo";
+import MetaInfo from "../components/productInfo/MetaInfo";
 
 import { Ionicons } from "@expo/vector-icons";
 
-export default function ProductInfo({ route, navigation: { goBack } }) {
+export default function ProductInfoScreen({ route, navigation: { goBack } }) {
   const { productId } = route.params;
   console.log();
   const [productInfo, setproductInfo] = useState(null);

@@ -7,9 +7,12 @@ import {
 // import Button from "./Button";
 
 function EmptyCard({ message }) {
+  // console.log(message);
   return (
     <View style={styles.container}>
-      <Text>{message}</Text>
+      <View style={styles.inner}>
+        <Text style={styles.text}>{message}</Text>
+      </View>
     </View>
   );
 }
@@ -28,35 +31,21 @@ const styles = StyleSheet.create({
     elevation: 5,
     padding: 10,
     width: wp("70%"),
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "#e6af2e",
+    height: "60%",
   },
-  // image: {
-  //   height: hp("40%"),
-  //   borderRadius: 7,
-  //   marginBottom: hp("2%"),
-  //   objectFit: "contain",
-  // },
-  // title: {
-  //   fontSize: wp("3.7%"),
-  //   fontWeight: "bold",
-  // },
-  // priceContainer: {
-  //   flexDirection: "row",
-  //   justifyContent: "space-between",
-  //   alignItems: "center",
-  //   marginTop: hp("3%"),
-  // },
-  // category: {
-  //   fontSize: wp("3.4%"),
-  //   color: "#828282",
-  //   marginTop: 3,
-  // },
-  // price: {
-  //   fontSize: wp("4%"),
-  //   fontWeight: "bold",
-  // },
+  inner: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  text: {
+    textAlign: "center",
+    fontSize: 30,
+  },
 });
 
 export default EmptyCard;
