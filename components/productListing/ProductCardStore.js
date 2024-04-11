@@ -7,7 +7,7 @@ import {
 import Button from "../Button";
 import { memo } from "react";
 
-function ProductCard({ product }) {
+function ProductCardStore({ product }) {
   return (
     <View style={styles.container} key={product.id}>
       <Image
@@ -72,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(ProductCard);
+export default memo(ProductCardStore);

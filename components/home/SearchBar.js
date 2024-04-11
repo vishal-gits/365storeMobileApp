@@ -1,4 +1,4 @@
-import { View, TextInput, Keyboard } from "react-native";
+import { View, TextInput, Keyboard, StyleSheet } from "react-native";
 import { filter } from "lodash";
 import React, { useState, useRef } from "react";
 import { useStoreContext } from "../../globalstore/Store";
@@ -9,7 +9,8 @@ const SearchBar = ({ setProducts, products }) => {
   const textBox = useRef();
   const [query, setQuery] = useState("");
   const [clicked, setClicked] = useState(false);
-
+  // const query = state.query;
+  // console.log(query, "From Search Bar");
   const fullData = products;
 
   const handleSearch = (text) => {
@@ -43,18 +44,7 @@ const SearchBar = ({ setProducts, products }) => {
   };
 
   return (
-    <View
-      style={{
-        backgroundColor: "#000080",
-        padding: 5,
-        marginVertical: 10,
-        borderRadius: 30,
-        width: "80%",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        flexDirection: "row",
-      }}
-    >
+    <View style={styles.container}>
       <TextInput
         ref={textBox}
         autoCapitalize="none"
@@ -63,6 +53,7 @@ const SearchBar = ({ setProducts, products }) => {
         value={query}
         onChangeText={(queryText) => handleSearch(queryText)}
         placeholder="Search"
+        placeholderTextColor={"gray"}
         // onSubmitEditing={() => {
         //   console.log("submit editing");
         // }}
@@ -77,21 +68,14 @@ const SearchBar = ({ setProducts, products }) => {
           textBox.current.clear();
           setProducts(state.products);
         }}
-        style={{
-          backgroundColor: "#fff",
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-          width: clicked ? "90%" : "100%",
-          borderRadius: 30,
-          fontSize: 20,
-        }}
+        style={[styles.textInput, { width: clicked ? "90%" : "100%" }]}
       />
       {clicked && (
         <Entypo
           name="cross"
-          size={30}
+          size={25}
           color="white"
-          style={{ padding: 1 }}
+          style={{ padding: 2 }}
           onPress={() => {
             setClicked(false);
             Keyboard.dismiss();
@@ -103,4 +87,26 @@ const SearchBar = ({ setProducts, products }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#000080",
+    padding: 5,
+    marginVertical: 10,
+    borderRadius: 30,
+    width: "80%",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  textInput: {
+    backgroundColor: "#f5f5f5",
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+
+    borderRadius: 30,
+    fontSize: 18,
+  },
+});
+
 export default SearchBar;

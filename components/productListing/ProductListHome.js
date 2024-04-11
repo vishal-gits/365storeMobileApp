@@ -1,29 +1,32 @@
-import { FlatList, StyleSheet, Pressable, View } from "react-native";
+import { FlatList, Pressable } from "react-native";
 import EmptyCard from "../EmptyCard";
-import ProductCard from "./ProductCard";
 import { useNavigation } from "@react-navigation/native";
+import ProductCardHome from "./ProductCardHome";
 
-const ProductList = ({ products }) => {
-  // console.log(products.length, "From ProductList");
+const ProductListHome = ({ products }) => {
+  const productLength = products.length;
+  // console.log(productLength);
   const navigation = useNavigation();
   return (
     <>
-      {products.length > 0 ? (
+      {productLength > 0 ? (
         <FlatList
-          style={styles.list}
           data={products}
+          numColumns={2}
+          key={2}
           renderItem={({ item }) => {
             return (
               <Pressable
                 key={item.id}
                 onPress={() => {
                   // console.log(item.id);
-                  navigation.navigate("ProductInfo", {
-                    productId: item.id,
+                  navigation.navigate("Store", {
+                    screen: "ProductInfo",
+                    params: { productId: item.id },
                   });
                 }}
               >
-                <ProductCard product={item} />
+                <ProductCardHome product={item} productLength={productLength} />
               </Pressable>
             );
           }}
@@ -35,13 +38,4 @@ const ProductList = ({ products }) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  list: {
-    backgroundColor: "#e6af2e",
-    padding: 20,
-    borderRadius: 10,
-  },
-});
-
-export default ProductList;
+export default ProductListHome;

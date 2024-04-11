@@ -8,43 +8,66 @@ import {
 
 export default function Images({ images }) {
   const [activeImage, setActiveImage] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(true);
+  // console.log(images, "from images");
   useEffect(() => {
     setActiveImage(images[0].url);
-  }, []);
+    setIsLoading(false);
+  }, [images]);
 
   return (
-    <View style={styles.imageContainer}>
-      <Image source={{ uri: activeImage }} style={styles.image} />
-      <View style={styles.previewContainer}>
-        {images.map((image, index) => (
-          <Pressable
-            key={index}
-            onPress={() => {
-              setActiveImage(image.url);
-            }}
-            style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
-          >
-            <Image
-              source={{ uri: image.url }}
-              style={[
-                styles.imagePreview,
-                {
-                  borderWidth: activeImage === image.url ? 3 : 0,
-                },
-              ]}
-            />
-          </Pressable>
-        ))}
-      </View>
-    </View>
+    <>
+      {!isLoading && (
+        <View style={styles.container}>
+          <View style={styles.imageContainer}>
+            <Image source={{ uri: activeImage }} style={styles.image} />
+          </View>
+          <View style={styles.previewContainer}>
+            {images.map((image, index) => (
+              <Pressable
+                key={index}
+                onPress={() => {
+                  setActiveImage(image.url);
+                }}
+                style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
+              >
+                <Image
+                  source={{ uri: image.url }}
+                  style={[
+                    styles.imagePreview,
+                    {
+                      borderWidth: activeImage === image.url ? 3 : 0,
+                    },
+                  ]}
+                />
+              </Pressable>
+            ))}
+          </View>
+        </View>
+      )}
+    </>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#e6af2e",
+    paddingBottom: wp("10%"),
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    paddingTop: 10,
+  },
+  imageContainer: {
+    padding: "20",
+    borderRadius: 30,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   image: {
-    width: wp("100%"),
-    height: wp("100%"),
+    width: wp("80%"),
+    height: wp("80%"),
+    objectFit: "contain",
   },
   previewContainer: {
     flexDirection: "row",
@@ -52,10 +75,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: wp("-10%"),
   },
-  imageContainer: {
-    backgroundColor: "#F7F6FB",
-    paddingBottom: wp("10%"),
-  },
+
   imagePreview: {
     width: wp("15%"),
     marginRight: wp("5%"),

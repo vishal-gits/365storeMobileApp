@@ -8,6 +8,7 @@ import {
 export default function MetaInfo({ product }) {
   //   console.log(product.options[0].values);
   const [activeSize, setActiveSize] = useState(0);
+  // console.log(product.variants[1].prices[1].amount);
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    height: hp("100%"),
+    // height: hp("100%"),
     padding: hp("5%"),
   },
   title: {
@@ -90,8 +91,9 @@ const styles = StyleSheet.create({
     marginBottom: hp("2%"),
   },
   description: {
-    fontSize: hp("4%"),
+    fontSize: hp("3%"),
     color: "#aaa",
     marginTop: hp("2%"),
+    marginBottom: hp("10%"),
   },
 });

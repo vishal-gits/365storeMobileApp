@@ -18,6 +18,7 @@ const StoreReducer = (state, action) => {
         ...state,
         products: [...state.products, ...action.payload],
       };
+
     default:
       return state;
   }

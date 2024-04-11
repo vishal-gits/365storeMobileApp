@@ -19,10 +19,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "#e6af2e",
     width: "100%",
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   content: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "700",
     color: "#ffffff",
     textAlign: "center",
