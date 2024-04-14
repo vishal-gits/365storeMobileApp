@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet } from "react-native";
-const CartScreen = () => {
+const FinalOrder = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>CartScreen Screen</Text>
+    <View styles={styles.container}>
+      <Text styles={styles.text}>FinalOrder Screen</Text>
     </View>
   );
 };
@@ -19,4 +19,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CartScreen;
+export default FinalOrder;

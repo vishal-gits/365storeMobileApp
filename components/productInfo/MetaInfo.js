@@ -1,14 +1,55 @@
 import { View, Text, StyleSheet } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import Button from "../Button";
+import CheckCart from "../../utils/CheckCart";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useStoreContext } from "../../globalstore/Store";
+import { useNavigation } from "@react-navigation/native";
+import AddVariantToCart from "../../utils/AddVariantToCart";
 
 export default function MetaInfo({ product }) {
-  //   console.log(product.options[0].values);
   const [activeSize, setActiveSize] = useState(0);
+  const initialVariant = product.options[0].values[0].variant_id;
+  // console.log(initialVariant, "initial Variant from metainfo");
+  const [activeVariantId, setActiveVariantId] = useState(initialVariant);
+  const { updateCart } = useStoreContext();
+  const navigation = useNavigation();
+  const [isAddingCart, setIsAddingCart] = useState(false);
+  //   console.log(product.options[0].values);
   // console.log(product.variants[1].prices[1].amount);
+  // console.log(product.options[0]);
+
+  useEffect(() => {
+    // console.log("inside use Effect");
+    CheckCart();
+  }, []);
+
+  const AddToCart = async () => {
+    if (isAddingCart) {
+      return;
+    }
+
+    setIsAddingCart(true);
+    // console.log("clicked add to cart");
+    const cartId = await AsyncStorage.getItem("cart_id");
+    // console.log(cartId, "this is from Addtocart");
+    const CartAndVariantDetails = await AddVariantToCart(
+      cartId,
+      activeVariantId
+    );
+    // console.log(
+    //   CartAndVariantDetails,
+    //   " from AddToCart, just after AddVariantToCart function"
+    // );
+    updateCart(CartAndVariantDetails);
+    setIsAddingCart(false);
+    navigation.navigate("Cart", { screen: "CartItems" });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -17,7 +58,16 @@ export default function MetaInfo({ product }) {
           <Text style={styles.price}>
             ${product.variants[0].prices[1].amount / 100}
           </Text>
-          <Text style={styles.star}>⭐⭐⭐</Text>
+          <View style={styles.ratingContainer}>
+            <Text style={styles.star}>⭐⭐⭐</Text>
+            <Button
+              title="Add to Cart"
+              onPress={AddToCart}
+              medium={true}
+              textSize={15}
+              disabled={isAddingCart}
+            />
+          </View>
         </View>
       </View>
       <Text style={styles.heading}>Available Sizes</Text>
@@ -27,6 +77,9 @@ export default function MetaInfo({ product }) {
             key={index}
             onPress={() => {
               setActiveSize(index);
+              setActiveVariantId(() => {
+                return size.variant_id;
+              });
             }}
             style={[
               styles.sizeTag,
@@ -41,6 +94,13 @@ export default function MetaInfo({ product }) {
       </View>
       <Text style={styles.heading}>Description</Text>
       <Text style={styles.description}>{product.description}</Text>
+      <Button
+        title="Add to Cart"
+        onPress={AddToCart}
+        large={true}
+        textSize={20}
+        disabled={isAddingCart}
+      />
     </View>
   );
 }
@@ -53,6 +113,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     // height: hp("100%"),
     padding: hp("5%"),
+
+    paddingBottom: hp("10%"),
   },
   title: {
     fontSize: hp("3%"),
@@ -69,6 +131,12 @@ const styles = StyleSheet.create({
     fontSize: hp("4%"),
     fontWeight: "bold",
     color: "#C37AFF",
+  },
+  ratingContainer: {
+    // flex: 1,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
   heading: {
     fontSize: hp("4%"),
@@ -92,8 +160,8 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: hp("3%"),
-    color: "#aaa",
+    color: "gray",
     marginTop: hp("2%"),
-    marginBottom: hp("10%"),
+    // marginBottom: hp("10%"),
   },
 });

@@ -1,8 +1,10 @@
 import React from "react";
+import { View, Text } from "react-native";
 // import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import StoreScreen from "../screens/StoreScreen";
-import ProductInfo from "../screens/ProductInfoScreen";
+import StoreScreen from "../screens/StoreProduct/StoreScreen";
+import ProductInfo from "../screens/StoreProduct/ProductInfoScreen";
+import { AntDesign } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
 

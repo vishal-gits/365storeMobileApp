@@ -1,9 +1,17 @@
-import { StyleSheet, View, Pressable, FlatList } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Pressable,
+  FlatList,
+  SafeAreaView,
+  StatusBar,
+  Text,
+} from "react-native";
 import React, { useEffect, useState } from "react";
-import { useStoreContext } from "../globalstore/Store.js";
-import SearchBar from "../components/home/SearchBar.js";
-import ProductListStore from "../components/productListing/ProductListStore.js";
-import DropdownComponent from "../components/FilterDropdown.js";
+import { useStoreContext } from "../../globalstore/Store.js";
+import SearchBar from "../../components/home/SearchBar.js";
+import ProductListStore from "../../components/productListing/ProductListStore.js";
+import DropdownComponent from "../../components/FilterDropdown.js";
 import { Entypo } from "@expo/vector-icons";
 
 export default function StoreScreen() {
@@ -11,8 +19,9 @@ export default function StoreScreen() {
   const [products, setProducts] = useState(state.products);
   const [filterValue, setFilterValue] = useState(null);
   // console.log(products[0].title, "----from StoreScreen component");
+  console.log(StatusBar.currentHeight);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <SearchBar setProducts={setProducts} products={products} />
       <View style={styles.dropdown}>
         <DropdownComponent
@@ -36,18 +45,20 @@ export default function StoreScreen() {
       </View>
 
       <ProductListStore products={products} />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
+    // paddingTop: 50,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: StatusBar.currentHeight + 20,
   },
+
   dropdown: {
     width: "90%",
     justifyContent: "flex-start",

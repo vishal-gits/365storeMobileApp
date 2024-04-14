@@ -1,21 +1,26 @@
-import { View, Text, ScrollView, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Pressable,
+  StatusBar,
+} from "react-native";
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import axios from "axios";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Images from "../components/productInfo/Image";
-import baseURL from "../constants/url";
-import MetaInfo from "../components/productInfo/MetaInfo";
-
+import Images from "../../components/productInfo/Image";
+import baseURL from "../../constants/url";
+import MetaInfo from "../../components/productInfo/MetaInfo";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function ProductInfoScreen({ route, navigation: { navigate } }) {
   const { productId } = route.params;
-  // console.log(productId);
+
   const [productInfo, setproductInfo] = useState(null);
 
   useEffect(() => {
     axios.get(`${baseURL}/store/products/${productId}`).then((res) => {
-      // console.log(res.data.product.images, "from ProductInfoScreen");
       setproductInfo(res.data.product);
     });
   }, [productId]);
@@ -23,16 +28,20 @@ export default function ProductInfoScreen({ route, navigation: { navigate } }) {
   return (
     <SafeAreaView style={styles.container}>
       <Pressable onPress={() => navigate("StoreScreen")}>
-        <Ionicons
-          style={styles.icon}
-          name="arrow-back-outline"
-          size={24}
-          color="black"
-        />
+        <View style={styles.header}>
+          <Ionicons
+            style={styles.icon}
+            name="arrow-back-outline"
+            size={24}
+            color="black"
+          />
+          <Text style={styles.headerText}>Product Details</Text>
+        </View>
       </Pressable>
+
       <ScrollView>
         {productInfo && (
-          <View>
+          <View style={styles.scrollView}>
             <Images images={productInfo.images} />
             <MetaInfo product={productInfo} />
           </View>
@@ -45,10 +54,21 @@ export default function ProductInfoScreen({ route, navigation: { navigate } }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+
+    backgroundColor: "white",
     justifyContent: "center",
+
+    paddingTop: StatusBar.currentHeight - 20,
   },
-  icon: {
-    marginLeft: 10,
+  header: {
+    flexDirection: "row",
+    paddingLeft: 20,
+    paddingBottom: 10,
+    // justifyContent: "center",
+    alignItems: "center",
+  },
+  headerText: {
+    fontSize: 24,
+    paddingHorizontal: 5,
   },
 });

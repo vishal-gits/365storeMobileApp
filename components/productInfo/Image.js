@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 10,
     paddingTop: 10,
+    width: "100%",
   },
   imageContainer: {
     padding: "20",
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
   imagePreview: {
     width: wp("15%"),
     marginRight: wp("5%"),
-    borderColor: "#C37AFF",
+    borderColor: "#000080",
     borderRadius: 10,
     height: wp("15%"),
   },
