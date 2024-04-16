@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import { useStoreContext } from "../../globalstore/Store.js";
 import SearchBar from "../../components/home/SearchBar.js";
 import ProductListStore from "../../components/productListing/ProductListStore.js";
-import DropdownComponent from "../../components/FilterDropdown.js";
+import FilterDropdown from "../../components/FilterDropdown.js";
 import { Entypo } from "@expo/vector-icons";
 
 export default function StoreScreen() {
@@ -24,7 +24,7 @@ export default function StoreScreen() {
     <SafeAreaView style={styles.container}>
       <SearchBar setProducts={setProducts} products={products} />
       <View style={styles.dropdown}>
-        <DropdownComponent
+        <FilterDropdown
           setProducts={setProducts}
           products={products}
           filterValue={filterValue}

@@ -1,22 +1,19 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useStoreContext } from "../../globalstore/Store";
-
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import CartItem from "../../components/Cart/CartItem";
 
 const CartScreen = () => {
   const { state } = useStoreContext();
-  console.log(state.cart.items, "------from Cart Screen.js");
+  // console.log(state.cart.items, "------from Cart Screen.js");
 
+  const items = state.cart.items;
+  console.log(items, "----items from Cart Screen");
   return (
     <View style={styles.container}>
       <ScrollView>
-        {state?.cart?.items.map((product) => {
-          console.log(product, "---inside scrollview");
-          <Text>CartItem</Text>;
-        })}
+        {state?.cart?.items?.map((item) => (
+          <CartItem item={item} key={item.id} />
+        ))}
       </ScrollView>
     </View>
   );
@@ -28,21 +25,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
   },
-  // row: {
-  //   flexDirection: "row",
-  //   justifyContent: "space-between",
-  //   width: wp("90%"),
-  //   marginTop: 10,
-  // },
-  // total: {
-  //   borderTopWidth: 1,
-  //   paddingTop: 10,
-  //   borderTopColor: "#E5E5E5",
-  //   marginBottom: 10,
-  // },
-  // cartTotalText: {
-  //   fontSize: wp("4.5%"),
-  //   color: "#989899",
-  // },
 });
 export default CartScreen;

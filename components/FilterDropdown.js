@@ -10,7 +10,7 @@ const data = [
   { label: "Price-High to Low", value: "price_desc" },
 ];
 
-const DropdownComponent = ({
+const FilterDropdown = ({
   products,
   setProducts,
   filterValue: value,
@@ -69,7 +69,7 @@ const DropdownComponent = ({
   );
 };
 
-export default DropdownComponent;
+export default FilterDropdown;
 
 const styles = StyleSheet.create({
   dropdown: {

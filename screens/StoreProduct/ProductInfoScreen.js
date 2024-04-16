@@ -13,11 +13,13 @@ import Images from "../../components/productInfo/Image";
 import baseURL from "../../constants/url";
 import MetaInfo from "../../components/productInfo/MetaInfo";
 import { Ionicons } from "@expo/vector-icons";
+import { ActivityIndicator } from "react-native";
 
 export default function ProductInfoScreen({ route, navigation: { navigate } }) {
   const { productId } = route.params;
 
   const [productInfo, setproductInfo] = useState(null);
+  const [isAddingCart, setIsAddingCart] = useState(false);
 
   useEffect(() => {
     axios.get(`${baseURL}/store/products/${productId}`).then((res) => {
@@ -26,7 +28,7 @@ export default function ProductInfoScreen({ route, navigation: { navigate } }) {
   }, [productId]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       <Pressable onPress={() => navigate("StoreScreen")}>
         <View style={styles.header}>
           <Ionicons
@@ -40,10 +42,29 @@ export default function ProductInfoScreen({ route, navigation: { navigate } }) {
       </Pressable>
 
       <ScrollView>
+        {isAddingCart && (
+          <View
+            style={{
+              height: "100%",
+              flex: 1,
+              margin: 100,
+            }}
+          >
+            <ActivityIndicator size="100" color="red" />
+            <Text style={{ color: "red", fontSize: 24, textAlign: "center" }}>
+              Loading ....
+            </Text>
+          </View>
+        )}
         {productInfo && (
           <View style={styles.scrollView}>
-            <Images images={productInfo.images} />
-            <MetaInfo product={productInfo} />
+            {!isAddingCart && <Images images={productInfo.images} />}
+
+            <MetaInfo
+              product={productInfo}
+              isAddingCart={isAddingCart}
+              setIsAddingCart={setIsAddingCart}
+            />
           </View>
         )}
       </ScrollView>

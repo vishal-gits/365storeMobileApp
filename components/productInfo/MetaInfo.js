@@ -11,14 +11,14 @@ import { useStoreContext } from "../../globalstore/Store";
 import { useNavigation } from "@react-navigation/native";
 import AddVariantToCart from "../../utils/AddVariantToCart";
 
-export default function MetaInfo({ product }) {
+export default function MetaInfo({ product, isAddingCart, setIsAddingCart }) {
   const [activeSize, setActiveSize] = useState(0);
   const initialVariant = product.options[0].values[0].variant_id;
   // console.log(initialVariant, "initial Variant from metainfo");
   const [activeVariantId, setActiveVariantId] = useState(initialVariant);
   const { updateCart } = useStoreContext();
   const navigation = useNavigation();
-  const [isAddingCart, setIsAddingCart] = useState(false);
+  // const [isAddingCart, setIsAddingCart] = useState(false);
   //   console.log(product.options[0].values);
   // console.log(product.variants[1].prices[1].amount);
   // console.log(product.options[0]);
