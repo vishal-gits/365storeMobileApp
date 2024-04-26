@@ -1,8 +1,8 @@
 import { View, Text, Pressable, StyleSheet, Button } from "react-native";
-// import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
-const EmptyCartScreen = ({ navigation }) => {
-  //   const navigation = useNavigation();
+const EmptyCart = () => {
+  const navigation = useNavigation();
 
   return (
     <View style={styles.outer}>
@@ -30,10 +30,10 @@ const EmptyCartScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   outer: {
-    flex: 1,
+    // flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#fff",
   },
   container: {
     height: 400,
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-evenly",
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#fff",
   },
   text: {
     fontSize: 24,
@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EmptyCartScreen;
+export default EmptyCart;

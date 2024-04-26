@@ -6,6 +6,7 @@ import axios from "axios";
 import { useStoreContext } from "../globalstore/Store";
 import RootNavigator from "../routes/RootNavigator";
 import { View, Text } from "react-native";
+import CheckCart from "../utils/CheckCart";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -24,6 +25,9 @@ export default function SplashLoader() {
           });
         // console.log(results, "These are the results");
         getProducts(results);
+        await CheckCart();
+
+        // console.log(state.cart, "--- this is state.cart from splash loader");
         await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);

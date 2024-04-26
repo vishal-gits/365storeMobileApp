@@ -17,58 +17,74 @@ import { ActivityIndicator } from "react-native";
 
 export default function ProductInfoScreen({ route, navigation: { navigate } }) {
   const { productId } = route.params;
-
+  const [isLoading, setIsLoading] = useState(false);
   const [productInfo, setproductInfo] = useState(null);
   const [isAddingCart, setIsAddingCart] = useState(false);
 
   useEffect(() => {
-    axios.get(`${baseURL}/store/products/${productId}`).then((res) => {
-      setproductInfo(res.data.product);
-    });
+    setIsLoading(true);
+    axios
+      .get(`${baseURL}/store/products/${productId}`)
+      .then((res) => {
+        setproductInfo(res.data.product);
+      })
+      .then(() => setIsLoading(false));
   }, [productId]);
 
   return (
-    <SafeAreaView>
-      <Pressable onPress={() => navigate("StoreScreen")}>
-        <View style={styles.header}>
-          <Ionicons
-            style={styles.icon}
-            name="arrow-back-outline"
-            size={24}
-            color="black"
-          />
-          <Text style={styles.headerText}>Product Details</Text>
+    <>
+      {isLoading ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator size="100" color="red" />
         </View>
-      </Pressable>
+      ) : (
+        <SafeAreaView>
+          <Pressable onPress={() => navigate("StoreScreen")}>
+            <View style={styles.header}>
+              <Ionicons
+                style={styles.icon}
+                name="arrow-back-outline"
+                size={24}
+                color="black"
+              />
+              <Text style={styles.headerText}>Product Details</Text>
+            </View>
+          </Pressable>
 
-      <ScrollView>
-        {isAddingCart && (
-          <View
-            style={{
-              height: "100%",
-              flex: 1,
-              margin: 100,
-            }}
-          >
-            <ActivityIndicator size="100" color="red" />
-            <Text style={{ color: "red", fontSize: 24, textAlign: "center" }}>
-              Loading ....
-            </Text>
-          </View>
-        )}
-        {productInfo && (
-          <View style={styles.scrollView}>
-            {!isAddingCart && <Images images={productInfo.images} />}
+          <ScrollView>
+            {/* {isAddingCart && (
+              <View
+                style={{
+                  height: "100%",
+                  flex: 1,
+                  margin: 100,
+                }}
+              >
+                <ActivityIndicator size="100" color="red" />
+                <Text
+                  style={{ color: "red", fontSize: 24, textAlign: "center" }}
+                >
+                  Loading ....
+                </Text>
+              </View>
+            )} */}
+            {productInfo && (
+              <View style={styles.scrollView}>
+                {<Images images={productInfo.images} />}
 
-            <MetaInfo
-              product={productInfo}
-              isAddingCart={isAddingCart}
-              setIsAddingCart={setIsAddingCart}
-            />
-          </View>
-        )}
-      </ScrollView>
-    </SafeAreaView>
+                <MetaInfo
+                  product={productInfo}
+                  isAddingCart={isAddingCart}
+                  setIsAddingCart={setIsAddingCart}
+                />
+              </View>
+            )}
+          </ScrollView>
+        </SafeAreaView>
+      )}
+    </>
   );
 }
 

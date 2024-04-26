@@ -10,79 +10,72 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DropdownComponent from "../DropdownComponent";
 import { useStoreContext } from "../../globalstore/Store";
+import {
+  qtyArr,
+  CartEditCheckFunction,
+  RemoveCart,
+  UpdateCartInfo,
+} from "../../utils/CartEditFunctions";
 
 const CartEdit = ({ item, setIsModalVisible }) => {
-  const { state } = useStoreContext();
-  const [currentVariant, setCurrentVariant] = useState(item.description);
+  const { state, updateCart } = useStoreContext();
+
   const [currentQuantity, setCurrentQuantity] = useState(item.quantity);
+  const cartId = state.cart.id;
+  const lineItemId = item.id;
+  // console.log(lineItemId, "----lineItemId from CartEdit");
+  // console.log(item, "---item from cartEdit ");
 
-  console.log(item.description);
-  const currentProduct = state.products.filter(
-    (product) => product.id === item.variant.product.id
-  );
+  const quantityArr = qtyArr();
 
-  const variantOptionValuesArr = currentProduct[0].options[0].values;
+  const quantityEdit = CartEditCheckFunction(currentQuantity, item.quantity);
 
-  const variantValueArr = []; // array of sizes of variants
-  variantOptionValuesArr.map((variant) =>
-    variantValueArr.push({ label: variant.value, value: variant.value })
-  );
+  const handleClose = async () => {
+    if (currentQuantity === 0) {
+      const cartWithRemovedItem = await RemoveCart(cartId, lineItemId);
+      // console.log(cartWithRemovedItem, "--- from handleClose");
+      await updateCart(cartWithRemovedItem);
+    } else {
+      if (quantityEdit) {
+        const cartWithUpdatedItem = await UpdateCartInfo(
+          cartId,
+          lineItemId,
+          currentQuantity
+        );
+        // console.log(cartWithUpdatedItem, "--- from handleClose");
+        await updateCart(cartWithUpdatedItem);
+      }
+    }
 
-  const quantityArr = [];
-
-  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) =>
-    quantityArr.push({ label: num.toString(), value: num })
-  );
+    setIsModalVisible(false);
+  };
 
   return (
     <View style={styles.centeredView}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.heading}>Edit Cart Details</Text>
+        <Text style={styles.heading}>Edit Cart Item</Text>
         <Image source={{ uri: item.thumbnail }} style={styles.image} />
 
         <View style={styles.info}>
           <Text style={styles.title}>{item.title}</Text>
 
-          <Text
-            style={[
-              styles.text,
-              {
-                backgroundColor:
-                  currentVariant !== item.description ? "#e6af2e" : "white",
-              },
-            ]}
-          >
-            {currentVariant !== item.description
-              ? "Changed Variant"
-              : "Selected Variant"}
-            : {currentVariant}
-          </Text>
-          {variantOptionValuesArr.length != 1 && (
-            <DropdownComponent
-              value={currentVariant}
-              setValue={setCurrentVariant}
-              data={variantValueArr}
-              placeholder="Change the Selected Variant"
-            />
-          )}
+          <Text style={styles.text}>Selected Variant: {item.description}</Text>
+
           <Text style={styles.text}>Price: ${item.unit_price / 100}</Text>
 
           <Text
             style={[
               styles.text,
               {
-                backgroundColor:
-                  currentQuantity !== item.quantity ? "#e6af2e" : "white",
+                backgroundColor: quantityEdit ? "#e6af2e" : "white",
               },
             ]}
           >
-            {currentQuantity !== item.quantity
-              ? "Changed Order Quantity"
-              : "Order Quatity"}{" "}
-            : {currentQuantity}
+            {quantityEdit ? "Changed Order Quantity" : "Order Quatity"} :{" "}
+            {currentQuantity}
           </Text>
           <DropdownComponent
             value={currentQuantity}
@@ -98,19 +91,9 @@ const CartEdit = ({ item, setIsModalVisible }) => {
           )}
           <View style={styles.button}>
             <Button
-              title={
-                currentVariant !== item.description ||
-                currentQuantity !== item.quantity
-                  ? "Save & Close"
-                  : "Close"
-              }
-              color={
-                currentVariant !== item.description ||
-                currentQuantity !== item.quantity
-                  ? "red"
-                  : "#2196f3"
-              }
-              onPress={() => setIsModalVisible(false)}
+              title={quantityEdit ? "Save & Close" : "Close"}
+              color={quantityEdit ? "red" : "#2196f3"}
+              onPress={handleClose}
             />
           </View>
         </View>
@@ -138,6 +121,7 @@ const styles = StyleSheet.create({
     borderColor: "#000080",
     flex: 1,
     alignItems: "center",
+    borderRadius: 20,
   },
   heading: {
     paddingVertical: 20,
@@ -173,7 +157,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   button: {
-    width: "70%",
+    width: "60%",
     alignSelf: "center",
     marginTop: 30,
   },

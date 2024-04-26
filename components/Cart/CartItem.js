@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, Pressable, Modal } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -8,7 +8,7 @@ import { Feather } from "@expo/vector-icons";
 import CartEdit from "./CartEdit";
 
 export default function CartItem({ item }) {
-  //   console.log(item.id, "---from Cart Item");
+  // console.log(item.id, "---ItemIds from Cart Item");
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -24,7 +24,11 @@ export default function CartItem({ item }) {
             </Text>
             <Pressable onPress={() => setIsModalVisible(true)}>
               <Feather name="edit" size={24} color="#000080" />
-              <Modal animationType="slide" visible={isModalVisible}>
+              <Modal
+                animationType="slide"
+                visible={isModalVisible}
+                onRequestClose={() => setIsModalVisible(false)}
+              >
                 <CartEdit item={item} setIsModalVisible={setIsModalVisible} />
               </Modal>
             </Pressable>
@@ -32,7 +36,7 @@ export default function CartItem({ item }) {
         </View>
         <View style={styles.footer}>
           <Text style={styles.price}>${item.total / 100}</Text>
-          <Text style={styles.quantity}>x{item.quantity}</Text>
+          <Text style={styles.quantity}>Quantity : {item.quantity}</Text>
         </View>
       </View>
     </View>

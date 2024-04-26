@@ -19,7 +19,7 @@ export default function StoreScreen() {
   const [products, setProducts] = useState(state.products);
   const [filterValue, setFilterValue] = useState(null);
   // console.log(products[0].title, "----from StoreScreen component");
-  console.log(StatusBar.currentHeight);
+  // console.log(StatusBar.currentHeight);
   return (
     <SafeAreaView style={styles.container}>
       <SearchBar setProducts={setProducts} products={products} />

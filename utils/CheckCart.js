@@ -5,7 +5,7 @@ import axios from "axios";
 const CheckCart = () => {
   const getCartId = () => {
     axios.post(`${baseURL}/store/carts`).then((res) => {
-      //   console.log(res.data.card.id, "from getCart");
+      // console.log(res.data.card.id, "from getCart");
       AsyncStorage.setItem("cart_id", res.data.cart.id);
     });
   };

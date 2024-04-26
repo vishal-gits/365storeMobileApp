@@ -1,31 +1,27 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import StoreScreen from "../screens/StoreProduct/StoreScreen";
-import ProductInfo from "../screens/StoreProduct/ProductInfoScreen";
-import EmptyCart from "../screens/Cart/EmptyCartScreen";
 import Cart from "../screens/Cart/CartScreen";
-import CheckOut from "../screens/Cart/CheckOutScreen";
+
 import PlaceOrder from "../screens/Cart/PlaceOrderScreen";
 import Payment from "../screens/Cart/PaymentScreen";
 import FinalOrder from "../screens/Cart/FinalOrderScreen";
-
-import { useStoreContext } from "../globalstore/Store";
+import Shipping from "../screens/Cart/ShippingScreen";
+import Billing from "../screens/Cart/BillingScreen";
+import Delivery from "../screens/Cart/DeliveryScreen";
 
 const Stack = createNativeStackNavigator();
 
 const CartNavigator = () => {
-  const { state } = useStoreContext();
-
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="CartItems"
-        component={Object.keys(state.cart).length === 0 ? EmptyCart : Cart}
-      />
-      <Stack.Screen name="CheckOut" component={CheckOut} />
-      <Stack.Screen name="PlaceOrder" component={PlaceOrder} />
-      <Stack.Screen name="OrderPayment" component={Payment} />
-      <Stack.Screen name="FinalOrder" component={FinalOrder} />
+      <Stack.Screen name="CartItems" component={Cart} />
+      <Stack.Screen name="Checkout-Shipping" component={Shipping} />
+      <Stack.Screen name="Checkout-Billing" component={Billing} />
+      <Stack.Screen name="Checkout-Delivery" component={Delivery} />
+      <Stack.Screen name="Checkout-Payment" component={Payment} />
+      <Stack.Screen name="Checkout-PlaceOrder" component={PlaceOrder} />
+
+      <Stack.Screen name="Checkout-FinalOrder" component={FinalOrder} />
     </Stack.Navigator>
   );
 };

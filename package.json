@@ -9,10 +9,13 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@medusajs/icons": "^1.2.1",
+    "@medusajs/medusa-js": "^6.1.8",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.14",
     "@react-navigation/native-stack": "^6.9.22",
+    "@stripe/stripe-react-native": "^0.37.3",
     "algoliasearch": "^4.23.2",
     "axios": "^1.6.7",
     "expo": "^50.0.14",
@@ -23,6 +26,7 @@
     "react-instantsearch-core": "^7.7.0",
     "react-native": "0.73.6",
     "react-native-element-dropdown": "^2.10.4",
+    "react-native-paper": "^5.12.3",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-screens": "~3.29.0",
     "react-native-storage": "^1.0.1",

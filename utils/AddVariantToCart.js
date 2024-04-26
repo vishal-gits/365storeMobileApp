@@ -6,6 +6,7 @@ import axios from "axios";
 const AddVariantToCart = async (cartId, activeVariantId) => {
   //   const { state, updateCart } = useStoreContext();
   // console.log(activeVariantId, cartId, "from before fetch in AddVariantToCart");
+
   const cart = await fetch(`${baseURL}/store/carts/${cartId}/line-items`, {
     method: "POST",
     credentials: "include",

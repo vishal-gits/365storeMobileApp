@@ -3,17 +3,30 @@ import { StyleSheet, Text, View, Button } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-const DropdownComponent = ({ data, value, setValue, placeholder }) => {
+const DropdownComponent = ({
+  data,
+  value,
+  setValue,
+  placeholder,
+  bgColor,
+  textColor,
+}) => {
   return (
     <Dropdown
       mode="modal"
-      style={styles.dropdown}
-      placeholderStyle={styles.placeholderStyle}
+      style={[
+        styles.dropdown,
+        { backgroundColor: bgColor || "#24a0ed", color: textColor || "white" },
+      ]}
+      placeholderStyle={[styles.placeholderStyle, { color: textColor || null }]}
       selectedTextStyle={styles.selectedTextStyle}
       inputSearchStyle={styles.inputSearchStyle}
-      itemContainerStyle={styles.itemContainerStyle}
+      itemContainerStyle={[
+        styles.itemContainerStyle,
+        { backgroundColor: bgColor || "#24a0ed" },
+      ]}
       iconStyle={styles.iconStyle}
-      itemTextStyle={{ color: "white", textAlign: "center" }}
+      itemTextStyle={{ color: textColor || "white", textAlign: "center" }}
       data={data}
       search={false}
       maxHeight={300}
@@ -49,6 +62,7 @@ const styles = StyleSheet.create({
   placeholderStyle: {
     fontSize: 16,
     color: "white",
+    textAlign: "center",
   },
   selectedTextStyle: {
     fontSize: 16,
