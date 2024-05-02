@@ -8,7 +8,7 @@ import { Feather } from "@expo/vector-icons";
 import CartEdit from "./CartEdit";
 
 export default function CartItem({ item }) {
-  // console.log(item.id, "---ItemIds from Cart Item");
+  console.log(item.id, "---ItemIds from Cart Item");
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -92,14 +92,3 @@ const styles = StyleSheet.create({
     fontSize: wp("4%"),
   },
 });
-
-// import { View, Text } from "react-native";
-// const CartItem = ({ item }) => {
-//   console.log(item?.id, "----from Cart Item");
-//   return (
-//     <View>
-//       <Text>Cart Item</Text>
-//     </View>
-//   );
-// };
-// export default CartItem;

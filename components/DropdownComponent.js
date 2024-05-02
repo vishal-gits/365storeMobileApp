@@ -10,6 +10,8 @@ const DropdownComponent = ({
   placeholder,
   bgColor,
   textColor,
+  itemTextColor,
+  showValue,
 }) => {
   return (
     <Dropdown
@@ -26,7 +28,10 @@ const DropdownComponent = ({
         { backgroundColor: bgColor || "#24a0ed" },
       ]}
       iconStyle={styles.iconStyle}
-      itemTextStyle={{ color: textColor || "white", textAlign: "center" }}
+      itemTextStyle={{
+        color: itemTextColor || textColor || "white",
+        textAlign: "center",
+      }}
       data={data}
       search={false}
       maxHeight={300}
@@ -34,7 +39,7 @@ const DropdownComponent = ({
       valueField="value"
       placeholder={placeholder}
       searchPlaceholder="Search..."
-      value={placeholder}
+      value={showValue ? value : placeholder}
       onChange={(item) => {
         setValue(item.value);
       }}

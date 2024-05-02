@@ -15,12 +15,21 @@ export default function AddressForm({
   setAddressLine1,
   setAddressLine2,
   setCity,
-  countryCode,
   setCountryCode,
   setPostalCode,
   setProvince,
   setPhone,
   setCompany,
+  firstName,
+  lastName,
+  AddressLine1,
+  AddressLine2,
+  city,
+  countryCode,
+  province,
+  postalCode,
+  phone,
+  company,
 }) {
   return (
     // Creating a view to hold the user's input
@@ -35,6 +44,7 @@ export default function AddressForm({
         }}
         placeholder="*First Name"
         style={styles.input}
+        value={firstName}
       />
       <TextInput
         onChangeText={(e) => {
@@ -42,6 +52,7 @@ export default function AddressForm({
         }}
         placeholder="*Last Name"
         style={styles.input}
+        value={lastName}
       />
 
       <TextInput
@@ -50,6 +61,7 @@ export default function AddressForm({
         }}
         placeholder="*Address Line 1"
         style={styles.input}
+        value={AddressLine1}
       />
       <TextInput
         onChangeText={(e) => {
@@ -57,6 +69,7 @@ export default function AddressForm({
         }}
         placeholder="Address Line 2"
         style={styles.input}
+        value={AddressLine2}
       />
       <TextInput
         onChangeText={(e) => {
@@ -64,6 +77,7 @@ export default function AddressForm({
         }}
         placeholder="*City"
         style={styles.input}
+        value={city}
       />
       <CountrySelect
         countryCode={countryCode}
@@ -76,6 +90,7 @@ export default function AddressForm({
         }}
         placeholder="*Postal Code"
         style={styles.input}
+        value={postalCode}
       />
       <TextInput
         onChangeText={(e) => {
@@ -83,6 +98,7 @@ export default function AddressForm({
         }}
         placeholder="Province"
         style={styles.input}
+        value={province}
       />
       <TextInput
         onChangeText={(e) => {
@@ -90,6 +106,7 @@ export default function AddressForm({
         }}
         placeholder="Phone"
         style={styles.input}
+        value={phone}
       />
       <TextInput
         onChangeText={(e) => {
@@ -97,6 +114,7 @@ export default function AddressForm({
         }}
         placeholder="Company"
         style={styles.input}
+        value={company}
       />
     </View>
   );

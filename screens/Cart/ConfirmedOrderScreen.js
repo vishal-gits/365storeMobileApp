@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet } from "react-native";
-const FinalOrder = () => {
+const ConfirmedOrderScreen = () => {
   return (
-    <View styles={styles.container}>
-      <Text styles={styles.text}>FinalOrder Screen</Text>
+    <View style={styles.container}>
+      <Text>Order Confirmed</Text>
     </View>
   );
 };
@@ -13,10 +13,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  text: {
-    fontSize: 30,
-    textAlign: "center",
-  },
 });
 
-export default FinalOrder;
+export default ConfirmedOrderScreen;

@@ -1,6 +1,13 @@
 // Importing a few package and components
-import { View, StyleSheet, Text, TextInput, ScrollView } from "react-native";
-import React, { useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  ScrollView,
+  Keyboard,
+} from "react-native";
+import React, { useState, useEffect, memo } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -9,20 +16,31 @@ import Button from "../../components/Button";
 import AddBillingDetailsFunction from "../../utils/AddBillingDetailsFunction";
 import { useStoreContext } from "../../globalstore/Store";
 import { Checkbox } from "react-native-paper";
-import AddressForm from "../../components/Cart/AddressForm";
+import AddressForm from "../../components/cart/AddressForm";
+import LoadingModal from "../../utils/LoadingModal";
 
-export default function BillingScreen({ route, navigation }) {
+import { equalAddr } from "../../utils/addressEqualCheck";
+
+const BillingScreen = ({ route, navigation }) => {
   const { cartId, shippingAddress } = route.params;
-  //  console.log (
-  //     cartId,
-  //     shippingAddress,
-  //     "--- cartId and shippingAddress from BillingScreen starting"
-  //   );
+
   const { state, updateCart } = useStoreContext();
+  const [isUpdatingCart, setIsUpdatingCart] = useState(false);
+
   let address;
-  // Passing onChange as a prop
-  // const [billingAddress, setBillingAddress] = useState({});
-  // Declaring a few states to store the user's input
+
+  // const iA = state.cart?.billing_address; // iA=initialAddress
+  // console.log({ ...iA }, "---iA from billing address");
+
+  // const checkBoxState = () => {
+  //   if (iA && Object.keys(iA).length > 0) {
+  //     const equalAddress = equalAddr(shippingAddress, { ...iA });
+  //     if (equalAddress) {
+  //       console.log(equalAddress);
+  //       return true;
+  //     } else return false;
+  //   } else return true;
+  // };
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -36,8 +54,24 @@ export default function BillingScreen({ route, navigation }) {
   const [company, setCompany] = useState("");
 
   const [checked, setChecked] = useState(true);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   const handleBillingData = async () => {
+    setIsUpdatingCart(true);
     if (checked) {
       address = {
         first_name: shippingAddress.first_name,
@@ -86,11 +120,15 @@ export default function BillingScreen({ route, navigation }) {
     //   "---- BillingDetailsCart.billing_address from handleBillingData"
     // );
     await updateCart(BillingDetailsCart);
+    setIsUpdatingCart(false);
     navigation.navigate("Checkout-Delivery", { cartId: cartId });
   };
   return (
     // Creating a view to hold the user's input
+
     <View style={styles.container}>
+      {isUpdatingCart && <LoadingModal isLoading={isUpdatingCart} />}
+
       <ScrollView>
         <Text style={styles.headerText}>Billing Details</Text>
         <View style={styles.checkboxView}>
@@ -113,30 +151,40 @@ export default function BillingScreen({ route, navigation }) {
             <AddressForm
               {...{
                 setFirstName,
+                firstName,
                 setLastName,
+                lastName,
                 setAddressLine1,
+                AddressLine1,
                 setAddressLine2,
+                AddressLine2,
                 setCity,
+                city,
                 countryCode,
                 setCountryCode,
                 setPostalCode,
+                postalCode,
                 setProvince,
+                province,
                 setPhone,
+                phone,
                 setCompany,
+                company,
               }}
             />
           </View>
         )}
-
+      </ScrollView>
+      {!keyboardVisible && (
         <Button
           title="Continue to Delivery"
           large="large"
           onPress={handleBillingData}
         />
-      </ScrollView>
+      )}
     </View>
   );
-}
+};
 
 // Creating a stylesheet to style the view
 const styles = StyleSheet.create({
@@ -144,10 +192,11 @@ const styles = StyleSheet.create({
     // margin: hp("2%"),
     backgroundColor: "#fff",
     paddingHorizontal: 10,
-    paddingTop: 20,
-    paddingBottom: 30,
+    paddingTop: 10,
+    paddingBottom: 20,
     borderWidth: 5,
     margin: 5,
+    marginBottom: 70,
     borderColor: "#e6af2e",
     borderRadius: 30,
   },
@@ -171,3 +220,5 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 });
+
+export default BillingScreen;

@@ -14,6 +14,7 @@ import baseURL from "../../constants/url";
 import MetaInfo from "../../components/productInfo/MetaInfo";
 import { Ionicons } from "@expo/vector-icons";
 import { ActivityIndicator } from "react-native";
+import Loading from "../../utils/Loading";
 
 export default function ProductInfoScreen({ route, navigation: { navigate } }) {
   const { productId } = route.params;
@@ -33,13 +34,14 @@ export default function ProductInfoScreen({ route, navigation: { navigate } }) {
 
   return (
     <>
-      {isLoading ? (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <ActivityIndicator size="100" color="red" />
-        </View>
+      {productId !== productInfo?.id ? (
+        <Loading />
       ) : (
+        // <View
+        //   style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        // >
+        //   <ActivityIndicator size="100" color="red" />
+        // </View>
         <SafeAreaView>
           <Pressable onPress={() => navigate("StoreScreen")}>
             <View style={styles.header}>

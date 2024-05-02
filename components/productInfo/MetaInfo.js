@@ -11,11 +11,13 @@ import { useStoreContext } from "../../globalstore/Store";
 import { useNavigation } from "@react-navigation/native";
 import AddVariantToCart from "../../utils/AddVariantToCart";
 import { ActivityIndicator } from "react-native";
+import LoadingModal from "../../utils/LoadingModal";
+import baseURL from "../../constants/url";
 
 export default function MetaInfo({ product, isAddingCart, setIsAddingCart }) {
   const [activeSize, setActiveSize] = useState(0);
   const initialVariant = product.options[0].values[0].variant_id;
-  console.log(initialVariant, "initial Variant from metainfo");
+  // console.log(initialVariant, "initial Variant from metainfo");
   const [activeVariantId, setActiveVariantId] = useState(initialVariant);
   const { updateCart } = useStoreContext();
   const navigation = useNavigation();
@@ -37,6 +39,7 @@ export default function MetaInfo({ product, isAddingCart, setIsAddingCart }) {
     setIsAddingCart(true);
     // console.log("clicked add to cart");
     const cartId = await AsyncStorage.getItem("cart_id");
+
     // console.log(cartId, "this is from Addtocart");
     const CartAndVariantDetails = await AddVariantToCart(
       cartId,
@@ -46,13 +49,14 @@ export default function MetaInfo({ product, isAddingCart, setIsAddingCart }) {
     //   CartAndVariantDetails,
     //   " from AddToCart, just after AddVariantToCart function"
     // );
-    updateCart(CartAndVariantDetails);
+    await updateCart(CartAndVariantDetails);
     setIsAddingCart(false);
     navigation.navigate("Cart", { screen: "CartItems" });
   };
 
   return (
     <View style={styles.container}>
+      {isAddingCart && <LoadingModal isLoading={isAddingCart} />}
       <View style={styles.row}>
         <Text style={styles.title}>{product.title}</Text>
         <View>
@@ -67,7 +71,7 @@ export default function MetaInfo({ product, isAddingCart, setIsAddingCart }) {
               medium={true}
               textSize={15}
               disabled={isAddingCart}
-              isLoading={isAddingCart}
+              // isLoading={isAddingCart}
             />
           </View>
         </View>

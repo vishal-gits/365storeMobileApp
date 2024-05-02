@@ -1,9 +1,12 @@
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 
 export default function Loading() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignContent: "center" }}>
-      <Text style={{ fontSize: 30 }}>🌀 Loading...</Text>
+      <ActivityIndicator size="200" color="red" />
+      <Text style={{ fontSize: 30, textAlign: "center", color: "red" }}>
+        Loading...
+      </Text>
     </View>
   );
 }

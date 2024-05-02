@@ -12,7 +12,7 @@ const StripeCard = ({ setPaymentInfo }) => {
   };
   return (
     <View style={styles.payment}>
-      <Text style={styles.title}>Payment</Text>
+      <Text style={styles.title}>Card Details</Text>
       <CardField
         postalCodeEnabled={false}
         placeholders={{
@@ -21,6 +21,9 @@ const StripeCard = ({ setPaymentInfo }) => {
         cardStyle={{
           backgroundColor: "#FFFFFF",
           textColor: "#000000",
+          borderColor: "#a5a5a5",
+          borderWidth: 2,
+          borderRadius: 10,
         }}
         style={{
           width: "100%",
@@ -48,6 +51,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: wp("4.5%"),
+    fontWeight: "bold",
   },
 });
 

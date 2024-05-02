@@ -5,6 +5,8 @@ import { RadioButton } from "react-native-paper";
 import Button from "../../components/Button";
 import AddDeliveryDetailsFunction from "../../utils/AddDeliveryDetailsFunction";
 import { useStoreContext } from "../../globalstore/Store";
+import Loading from "../../utils/Loading";
+import LoadingModal from "../../utils/LoadingModal";
 
 const DeliveryScreen = ({ route, navigation }) => {
   const { updateCart } = useStoreContext();
@@ -14,6 +16,7 @@ const DeliveryScreen = ({ route, navigation }) => {
 
   const [value, setValue] = useState("");
   const [deliveryOptions, setDeliveryOptions] = useState([]);
+  const [isUpdatingCart, setIsUpdatingCart] = useState(false);
 
   useEffect(() => {
     const getDeliveryOptions = async () => {
@@ -36,6 +39,7 @@ const DeliveryScreen = ({ route, navigation }) => {
   const handleDeliverySubmit = async (value) => {
     // console.log("Delivery Submit Pressed");
     // console.log(value);
+    setIsUpdatingCart(true);
     const deliveryDetailsCart = await AddDeliveryDetailsFunction(cartId, value);
 
     // console.log(
@@ -43,49 +47,57 @@ const DeliveryScreen = ({ route, navigation }) => {
     //   "---- deliveryDetailsCart.shipping_methods from handleDeliverySubmit"
     // );
     await updateCart(deliveryDetailsCart);
+    setIsUpdatingCart(false);
     navigation.navigate("Checkout-Payment", { cartId: cartId });
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>Delivery Options</Text>
-      <Text style={styles.captionText}>
-        Choose your preferred Delivery option
-      </Text>
-      {deliveryOptions && (
-        <View style={styles.optionsContainer}>
-          <RadioButton.Group
-            onValueChange={(newValue) => setValue(newValue)}
-            value={value}
-          >
-            {deliveryOptions.map((option) => {
-              const { name, price_incl_tax, id } = option;
-              return (
-                <View key={id} style={styles.outerRow}>
-                  <View style={styles.innerRow}>
-                    <RadioButton value={id} />
-                    <Text style={styles.text}>{name}</Text>
-                  </View>
+    <>
+      {deliveryOptions.length > 0 ? (
+        <View style={styles.container}>
+          {isUpdatingCart && <LoadingModal isLoading={isUpdatingCart} />}
+          <Text style={styles.headerText}>Delivery Options</Text>
+          <Text style={styles.captionText}>
+            Choose your preferred Delivery option
+          </Text>
+          {deliveryOptions && (
+            <View style={styles.optionsContainer}>
+              <RadioButton.Group
+                onValueChange={(newValue) => setValue(newValue)}
+                value={value}
+              >
+                {deliveryOptions.map((option) => {
+                  const { name, price_incl_tax, id } = option;
+                  return (
+                    <View key={id} style={styles.outerRow}>
+                      <View style={styles.innerRow}>
+                        <RadioButton value={id} />
+                        <Text style={styles.text}>{name}</Text>
+                      </View>
 
-                  <Text style={styles.text}>
-                    ${(price_incl_tax / 100).toFixed(2)}
-                  </Text>
-                </View>
-              );
-            })}
-          </RadioButton.Group>
+                      <Text style={styles.text}>
+                        ${(price_incl_tax / 100).toFixed(2)}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </RadioButton.Group>
 
-          {value && (
-            <Button
-              title="Continue to Payment"
-              onPress={() => handleDeliverySubmit(value)}
-              large={true}
-              textSize={24}
-            />
+              {value && (
+                <Button
+                  title="Continue to Payment"
+                  onPress={() => handleDeliverySubmit(value)}
+                  large={true}
+                  textSize={24}
+                />
+              )}
+            </View>
           )}
         </View>
+      ) : (
+        <Loading />
       )}
-    </View>
+    </>
   );
 };
 

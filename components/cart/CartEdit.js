@@ -19,22 +19,26 @@ import {
   RemoveCart,
   UpdateCartInfo,
 } from "../../utils/CartEditFunctions";
+import LoadingModal from "../../utils/LoadingModal";
 
 const CartEdit = ({ item, setIsModalVisible }) => {
   const { state, updateCart } = useStoreContext();
 
   const [currentQuantity, setCurrentQuantity] = useState(item.quantity);
+  const [isUpdatingCart, setIsUpdatingCart] = useState(false);
   const cartId = state.cart.id;
   const lineItemId = item.id;
-  // console.log(lineItemId, "----lineItemId from CartEdit");
-  // console.log(item, "---item from cartEdit ");
+  console.log(lineItemId, "----lineItemId from CartEdit");
+  console.log(item, "---item from cartEdit ");
 
   const quantityArr = qtyArr();
 
   const quantityEdit = CartEditCheckFunction(currentQuantity, item.quantity);
 
   const handleClose = async () => {
+    setIsUpdatingCart(true);
     if (currentQuantity === 0) {
+      console.log("i am zero");
       const cartWithRemovedItem = await RemoveCart(cartId, lineItemId);
       // console.log(cartWithRemovedItem, "--- from handleClose");
       await updateCart(cartWithRemovedItem);
@@ -49,12 +53,14 @@ const CartEdit = ({ item, setIsModalVisible }) => {
         await updateCart(cartWithUpdatedItem);
       }
     }
-
+    setIsUpdatingCart(false);
     setIsModalVisible(false);
   };
 
   return (
     <View style={styles.centeredView}>
+      {isUpdatingCart && <LoadingModal isLoading={isUpdatingCart} />}
+
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.heading}>Edit Cart Item</Text>
         <Image source={{ uri: item.thumbnail }} style={styles.image} />

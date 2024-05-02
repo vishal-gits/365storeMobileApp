@@ -13,7 +13,7 @@ SplashScreen.preventAutoHideAsync();
 export default function SplashLoader() {
   const [appIsReady, setAppIsReady] = useState(false);
 
-  const { state, getProducts } = useStoreContext();
+  const { state, getProducts, updateCart } = useStoreContext();
 
   useEffect(() => {
     async function prepare() {
@@ -26,7 +26,14 @@ export default function SplashLoader() {
         // console.log(results, "These are the results");
         getProducts(results);
         await CheckCart();
-
+        // if (cartId) {
+        //   await fetch(`${baseURL}/store/carts/${cartId}`, {
+        //     credentials: "include",
+        //   })
+        //     .then((response) => response.json())
+        //     .then(({ cart }) => updateCart(cart));
+        // }
+        // console.log(cartId);
         // console.log(state.cart, "--- this is state.cart from splash loader");
         await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {

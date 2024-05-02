@@ -1,6 +1,11 @@
 import baseURL from "../constants/url";
 
 export const CartEditCheckFunction = (currentValue, initialValue) => {
+  console.log(
+    currentValue,
+    initialValue,
+    "---current and initialValue from CartEditCheckFunction"
+  );
   if (currentValue !== initialValue) {
     return true;
   } else {

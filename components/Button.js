@@ -13,9 +13,11 @@ export default function Button({
   textSize,
   large,
   medium,
+  small,
   disabled,
   isLoading,
 }) {
+  // console.log(textSize);
   return (
     <Pressable
       style={({ pressed }) => [
@@ -23,10 +25,12 @@ export default function Button({
         style,
         large && styles.large,
         medium && styles.medium,
+        small && styles.small,
         {
           fontSize: textSize ? textSize : wp("3.5%"),
           // opacity: pressed ? 0.5 : 1,
           backgroundColor: isLoading || pressed ? "red" : "#C37AFF",
+          opacity: disabled ? 0.7 : 1,
         },
       ]}
       onPress={onPress}
@@ -59,6 +63,10 @@ const styles = StyleSheet.create({
   medium: {
     width: "50%",
     height: wp("12%"),
+  },
+  small: {
+    width: "30%",
+    height: wp("8%"),
   },
   text: {
     color: "#fff",
