@@ -26,11 +26,6 @@ export default function MetaInfo({ product, isAddingCart, setIsAddingCart }) {
   // console.log(product.variants[1].prices[1].amount);
   // console.log(product.options[0]);
 
-  // useEffect(() => {
-  //   // console.log("inside use Effect");
-  //   CheckCart();
-  // }, []);
-
   const AddToCart = async () => {
     if (isAddingCart) {
       return;
@@ -38,7 +33,9 @@ export default function MetaInfo({ product, isAddingCart, setIsAddingCart }) {
 
     setIsAddingCart(true);
     // console.log("clicked add to cart");
-    const cartId = await AsyncStorage.getItem("cart_id");
+    const cartId = await CheckCart();
+
+    // const cartId = await AsyncStorage.getItem("cart_id");
 
     // console.log(cartId, "this is from Addtocart");
     const CartAndVariantDetails = await AddVariantToCart(

@@ -6,10 +6,12 @@ import { useConfirmPayment } from "@stripe/stripe-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useStoreContext } from "../../globalstore/Store";
 import baseURL from "../../constants/url";
+import LoadingModal from "../../utils/LoadingModal";
 
 const OrderScreen = ({ navigation }) => {
   const { state } = useStoreContext();
   const [checked, setChecked] = useState(false);
+  const [isOrdering, setIsOrdering] = useState(false);
   const { confirmPayment, loading } = useConfirmPayment();
 
   const provider_id = state.cart.payment_session.provider_id;
@@ -44,8 +46,8 @@ const OrderScreen = ({ navigation }) => {
   };
 
   const handlePlaceOrder = async () => {
+    setIsOrdering(true);
     console.log("i am pressed");
-
     if (provider_id === "stripe") {
       const clientSecret = state.cart.payment_session.data.client_secret;
       console.log(clientSecret, "--clientSecret from handlePayment");
@@ -83,11 +85,13 @@ const OrderScreen = ({ navigation }) => {
     } else if (provider_id === "manual") {
       await completeCart(cartId);
     }
+    setIsOrdering(false);
     navigation.navigate("Order-Confirmed");
   };
 
   return (
     <View style={styles.container}>
+      {isOrdering && <LoadingModal isLoading={isOrdering} />}
       <View style={styles.innerContainer}>
         <View style={styles.checkBoxView}>
           <Checkbox

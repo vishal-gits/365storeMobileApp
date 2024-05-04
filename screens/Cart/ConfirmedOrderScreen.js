@@ -2,7 +2,9 @@ import { View, Text, StyleSheet } from "react-native";
 const ConfirmedOrderScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>Order Confirmed</Text>
+      <Text style={{ fontWeight: "bold", fontSize: 30 }}>
+        Congratulations, Your Order is confirmed.
+      </Text>
     </View>
   );
 };

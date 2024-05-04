@@ -6,7 +6,7 @@ const CountrySelect = ({ countryCode, setCountryCode }) => {
   const { state } = useStoreContext();
   const region = state.cart.region;
   // console.log(region);
-  console.log(state.cart.completed_at, "----completed_at from conuntry select");
+  // console.log(state.cart.completed_at, "----completed_at from conuntry select");
   const countryOptions = useMemo(() => {
     if (!region) {
       return [];

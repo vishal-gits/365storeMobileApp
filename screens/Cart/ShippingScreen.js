@@ -121,6 +121,14 @@ const ShippingScreen = ({ route, navigation }) => {
         <Text style={styles.headerText}>Shipping Details</Text>
         <Text>Please fill the shipping details below</Text>
         {/* Creating a text input for the user's first name */}
+        <TextInput
+          onChangeText={(e) => {
+            setEmail(e);
+          }}
+          placeholder="*Email"
+          style={styles.input}
+          value={email}
+        />
         <AddressForm
           {...{
             setFirstName,
@@ -144,14 +152,6 @@ const ShippingScreen = ({ route, navigation }) => {
             phone,
             company,
           }}
-        />
-        <TextInput
-          onChangeText={(e) => {
-            setEmail(e);
-          }}
-          placeholder="*Email"
-          style={styles.input}
-          value={email}
         />
       </ScrollView>
 

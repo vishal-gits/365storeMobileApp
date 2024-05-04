@@ -7,10 +7,15 @@ import CartFooter from "../../components/cart/CartFooter";
 
 const CartScreen = () => {
   const { state } = useStoreContext();
-  console.log(state.cart.display_id, "---orderId from Cart Screen");
+
+  console.log(
+    state.cart.items,
+    Object.keys(state.cart.items).length,
+    "---cartItems from Cart Screen"
+  );
   return (
     <View style={styles.container}>
-      {!state.cart.display_id && Object.keys(state.cart).length !== 0 ? (
+      {Object.keys(state.cart.items).length !== 0 ? (
         <ScrollView>
           {state?.cart?.items?.map((item) => (
             <CartItem item={item} key={item.id} />

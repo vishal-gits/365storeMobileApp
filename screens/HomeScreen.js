@@ -5,6 +5,7 @@ import Banner from "../components/home/Banner.js";
 import { useStoreContext } from "../globalstore/Store.js";
 import SearchBar from "../components/home/SearchBar.js";
 import ProductListHome from "../components/productListing/ProductListHome.js";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function HomeScreen() {
   const { state } = useStoreContext();

@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StripeProvider } from "@stripe/stripe-react-native";
-
+import { useStoreContext } from "../globalstore/Store";
 import Cart from "../screens/Cart/CartScreen";
 
 import Review from "../screens/Cart/ReviewScreen";
@@ -15,6 +15,9 @@ import ConfirmedOrder from "../screens/Cart/ConfirmedOrderScreen";
 const Stack = createNativeStackNavigator();
 
 const CartNavigator = () => {
+  const { state } = useStoreContext();
+  const cart = state.cart;
+  const cartId = cart.id;
   return (
     <StripeProvider publishableKey="pk_test_51OuOY2SBJdegiVis8WwyzfMK2SKquZjx5h1uqIn1fQrROdQ2jCTLKBggCfsMnT9bRPMBOiZDoPGr91T75TzSTy0E00g7raTIeB">
       <Stack.Navigator>
@@ -25,7 +28,12 @@ const CartNavigator = () => {
         <Stack.Screen name="Checkout-Payment" component={Payment} />
         <Stack.Screen name="Checkout-Review" component={Review} />
         <Stack.Screen name="Checkout-Order" component={Order} />
-        <Stack.Screen name="Order-Confirmed" component={ConfirmedOrder} />
+
+        <Stack.Screen
+          name="Order-Confirmed"
+          component={ConfirmedOrder}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </StripeProvider>
   );
