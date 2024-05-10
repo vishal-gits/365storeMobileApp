@@ -5,33 +5,60 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-const CartScreen = () => {
-  const { state } = useStoreContext();
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>Cart Items</Text>
-      {state?.cart?.items?.map((item) => (
-        <View style={styles.innerContainer} key={item.id}>
-          <Image source={{ uri: item.thumbnail }} style={styles.image} />
-          <View style={styles.info}>
-            <View>
-              <Text style={styles.title}>{item.title}</Text>
-              <View style={styles.priceBlock}>
-                <Text style={styles.description}>
-                  {item.description} • ${item.unit_price / 100}
-                </Text>
+const CartScreen = ({ orderItems }) => {
+  if (orderItems) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.headerText}>Ordered Items</Text>
+        {orderItems?.map((item) => (
+          <View style={styles.innerContainer} key={item.id}>
+            <Image source={{ uri: item.thumbnail }} style={styles.image} />
+            <View style={styles.info}>
+              <View>
+                <Text style={styles.title}>{item.title}</Text>
+                <View style={styles.priceBlock}>
+                  <Text style={styles.description}>
+                    {item.description} • ${item.unit_price / 100}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.footer}>
+                <Text style={styles.price}>${item.total / 100}</Text>
+                <Text style={styles.quantity}>Quantity : {item.quantity}</Text>
               </View>
             </View>
-            <View style={styles.footer}>
-              <Text style={styles.price}>${item.total / 100}</Text>
-              <Text style={styles.quantity}>Quantity : {item.quantity}</Text>
+          </View>
+        ))}
+      </View>
+    );
+  } else {
+    const { state } = useStoreContext();
+
+    return (
+      <View style={styles.container}>
+        <Text style={styles.headerText}>Cart Items</Text>
+        {state?.cart?.items?.map((item) => (
+          <View style={styles.innerContainer} key={item.id}>
+            <Image source={{ uri: item.thumbnail }} style={styles.image} />
+            <View style={styles.info}>
+              <View>
+                <Text style={styles.title}>{item.title}</Text>
+                <View style={styles.priceBlock}>
+                  <Text style={styles.description}>
+                    {item.description} • ${item.unit_price / 100}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.footer}>
+                <Text style={styles.price}>${item.total / 100}</Text>
+                <Text style={styles.quantity}>Quantity : {item.quantity}</Text>
+              </View>
             </View>
           </View>
-        </View>
-      ))}
-    </View>
-  );
+        ))}
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

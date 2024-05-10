@@ -1,24 +1,53 @@
 import { View, StyleSheet, Text } from "react-native";
 
-const ReviewShippingPayment = ({ deliveryDetails, paymentInfo }) => {
-  return (
-    <>
-      <View style={styles.container}>
-        <Text style={styles.headerText}>Delivery</Text>
-        <Text>Details: </Text>
-        <Text style={styles.text}>
-          {deliveryDetails.name} ( ${(deliveryDetails.amount / 100).toFixed(2)})
-        </Text>
-      </View>
-      <View style={styles.container}>
-        <Text style={styles.headerText}>Payment</Text>
-        <Text>Payment Method:</Text>
-        <Text style={styles.text}>
-          {paymentInfo ? `Credit Card: ${paymentInfo.brand}` : "Test Payment"}
-        </Text>
-      </View>
-    </>
-  );
+const ReviewShippingPayment = ({ deliveryDetails, paymentInfo, orderId }) => {
+  if (orderId) {
+    return (
+      <>
+        <View style={styles.container}>
+          <Text style={styles.headerText}>Delivery</Text>
+          <Text>Details: </Text>
+          <Text style={styles.text}>
+            {deliveryDetails.name} ( $
+            {(deliveryDetails.amount / 100).toFixed(2)})
+          </Text>
+        </View>
+
+        <View style={styles.container}>
+          <Text style={styles.headerText}>Payment</Text>
+          <Text>Payment Details:</Text>
+          <Text style={styles.text}>
+            {`You have paid $${(paymentInfo.amount / 100).toFixed(
+              2
+            )} at ${new Date(paymentInfo.created_at).toString()}`}
+          </Text>
+        </View>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <View style={styles.container}>
+          <Text style={styles.headerText}>Delivery</Text>
+          <Text>Details: </Text>
+          <Text style={styles.text}>
+            {deliveryDetails.name} ( $
+            {(deliveryDetails.amount / 100).toFixed(2)})
+          </Text>
+        </View>
+
+        <View style={styles.container}>
+          <Text style={styles.headerText}>Payment</Text>
+          <Text>Payment Method:</Text>
+          <Text style={styles.text}>
+            {Object.keys(paymentInfo).length > 0
+              ? `Credit Card: ${paymentInfo.brand}`
+              : "Test Payment"}
+          </Text>
+        </View>
+      </>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

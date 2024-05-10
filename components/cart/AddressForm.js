@@ -1,131 +1,140 @@
 // Importing a few package and components
 import { View, StyleSheet, Text, TextInput } from "react-native";
 import React, { useState } from "react";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import Button from "../Button";
-
 import CountrySelect from "./CountrySelect";
 
 export default function AddressForm({
-  setFirstName,
-  setLastName,
-  setAddressLine1,
-  setAddressLine2,
-  setCity,
-  setCountryCode,
-  setPostalCode,
-  setProvince,
-  setPhone,
-  setCompany,
-  firstName,
-  lastName,
-  AddressLine1,
-  AddressLine2,
-  city,
+  addr,
+  setAddr,
   countryCode,
-  province,
-  postalCode,
-  phone,
-  company,
+  setCountryCode,
+  errors,
+  emailBlock,
+  countryError,
 }) {
   return (
     // Creating a view to hold the user's input
 
     <View>
+      {emailBlock && (
+        <>
+          <TextInput
+            onChangeText={(e) => {
+              setAddr({ ...addr, email: e });
+            }}
+            placeholder="*Email"
+            style={styles.input}
+            value={addr.email}
+          />
+          {errors.email && <Text style={{ color: "red" }}>{errors.email}</Text>}
+        </>
+      )}
       <TextInput
-        onChangeText={(e) => {
-          // Setting the user's input to the firstName state
-          setFirstName(e);
-
-          // Calling the handleChange function
+        onChangeText={async (e) => {
+          setAddr({ ...addr, firstName: e });
         }}
         placeholder="*First Name"
         style={styles.input}
-        value={firstName}
+        value={addr.firstName}
       />
+      {errors.firstName && (
+        <Text style={{ color: "red" }}>{errors.firstName}</Text>
+      )}
       <TextInput
         onChangeText={(e) => {
-          setLastName(e);
+          setAddr({ ...addr, lastName: e });
         }}
         placeholder="*Last Name"
         style={styles.input}
-        value={lastName}
+        value={addr.lastName}
       />
-
+      {errors.lastName && (
+        <Text style={{ color: "red" }}>{errors.lastName}</Text>
+      )}
       <TextInput
         onChangeText={(e) => {
-          setAddressLine1(e);
+          setAddr({ ...addr, AddressLine1: e });
         }}
         placeholder="*Address Line 1"
         style={styles.input}
-        value={AddressLine1}
+        value={addr.AddressLine1}
       />
+      {errors.AddressLine1 && (
+        <Text style={{ color: "red" }}>{errors.AddressLine1}</Text>
+      )}
       <TextInput
         onChangeText={(e) => {
-          setAddressLine2(e);
+          setAddr({ ...addr, AddressLine2: e });
         }}
         placeholder="Address Line 2"
         style={styles.input}
-        value={AddressLine2}
+        value={addr.AddressLine2}
       />
+      {errors.AddressLine2 && (
+        <Text style={{ color: "red" }}>{errors.AddressLine2}</Text>
+      )}
       <TextInput
         onChangeText={(e) => {
-          setCity(e);
+          setAddr({ ...addr, city: e });
         }}
         placeholder="*City"
         style={styles.input}
-        value={city}
+        value={addr.city}
       />
+      {errors.city && <Text style={{ color: "red" }}>{errors.city}</Text>}
+      <TextInput
+        onChangeText={(e) => {
+          setAddr({ ...addr, postalCode: e });
+        }}
+        placeholder="*Postal Code"
+        style={styles.input}
+        value={addr.postalCode}
+      />
+      {errors.postalCode && (
+        <Text style={{ color: "red" }}>{errors.postalCode}</Text>
+      )}
       <CountrySelect
         countryCode={countryCode}
         setCountryCode={setCountryCode}
       />
+      {countryError && (
+        <Text style={{ color: "red" }}>Please select country</Text>
+      )}
 
       <TextInput
         onChangeText={(e) => {
-          setPostalCode(e);
-        }}
-        placeholder="*Postal Code"
-        style={styles.input}
-        value={postalCode}
-      />
-      <TextInput
-        onChangeText={(e) => {
-          setProvince(e);
+          setAddr({ ...addr, province: e });
         }}
         placeholder="Province"
         style={styles.input}
-        value={province}
+        value={addr.province}
       />
+      {errors.province && (
+        <Text style={{ color: "red" }}>{errors.province}</Text>
+      )}
       <TextInput
         onChangeText={(e) => {
-          setPhone(e);
+          setAddr({ ...addr, phone: e });
         }}
         placeholder="Phone"
         style={styles.input}
-        value={phone}
+        value={addr.phone}
       />
+      {errors.phone && <Text style={{ color: "red" }}>{errors.phone}</Text>}
       <TextInput
         onChangeText={(e) => {
-          setCompany(e);
+          setAddr({ ...addr, company: e });
         }}
         placeholder="Company"
         style={styles.input}
-        value={company}
+        value={addr.company}
       />
+      {errors.company && <Text style={{ color: "red" }}>{errors.company}</Text>}
     </View>
   );
 }
 
-// Creating a stylesheet to style the view
 const styles = StyleSheet.create({
-  //   container: {
-  //     margin: hp("2%"),
-  //     backgroundColor: "#fff",
-  //   },
   input: {
     borderWidth: 1,
     padding: 12,

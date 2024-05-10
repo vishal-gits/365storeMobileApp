@@ -3,58 +3,46 @@ import {
   View,
   StyleSheet,
   Text,
-  TextInput,
   ScrollView,
   Keyboard,
+  KeyboardAvoidingView,
 } from "react-native";
-import React, { useState, useEffect, memo } from "react";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import React, { useState, useEffect, memo, useRef } from "react";
 import Button from "../../components/Button";
 import AddBillingDetailsFunction from "../../utils/AddBillingDetailsFunction";
 import { useStoreContext } from "../../globalstore/Store";
 import { Checkbox } from "react-native-paper";
 import AddressForm from "../../components/cart/AddressForm";
 import LoadingModal from "../../utils/LoadingModal";
-
-import { equalAddr } from "../../utils/addressEqualCheck";
+import {
+  ValidateAll,
+  billingValidationSchema,
+} from "../../utils/validationSchema";
 
 const BillingScreen = ({ route, navigation }) => {
   const { cartId, shippingAddress } = route.params;
-
   const { state, updateCart } = useStoreContext();
   const [isUpdatingCart, setIsUpdatingCart] = useState(false);
+  let finalAddress;
+  const [addr, setAddr] = useState({
+    firstName: "",
+    lastName: "",
+    AddressLine1: "",
+    AddressLine2: "",
+    city: "",
+    province: "",
+    postalCode: "",
+    phone: "",
+    company: "",
+  });
 
-  let address;
-
-  // const iA = state.cart?.billing_address; // iA=initialAddress
-  // console.log({ ...iA }, "---iA from billing address");
-
-  // const checkBoxState = () => {
-  //   if (iA && Object.keys(iA).length > 0) {
-  //     const equalAddress = equalAddr(shippingAddress, { ...iA });
-  //     if (equalAddress) {
-  //       console.log(equalAddress);
-  //       return true;
-  //     } else return false;
-  //   } else return true;
-  // };
-
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [AddressLine1, setAddressLine1] = useState("");
-  const [AddressLine2, setAddressLine2] = useState("");
-  const [city, setCity] = useState("");
   const [countryCode, setCountryCode] = useState("");
-  const [province, setProvince] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [phone, setPhone] = useState("");
-  const [company, setCompany] = useState("");
+  const [countryError, setCountryError] = useState("");
 
   const [checked, setChecked] = useState(true);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [errors, setErrors] = useState({});
+  const dataIsValid = useRef(false);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
@@ -71,9 +59,8 @@ const BillingScreen = ({ route, navigation }) => {
   }, []);
 
   const handleBillingData = async () => {
-    setIsUpdatingCart(true);
     if (checked) {
-      address = {
+      finalAddress = {
         first_name: shippingAddress.first_name,
         last_name: shippingAddress.last_name,
         address_1: shippingAddress.address_1,
@@ -87,38 +74,49 @@ const BillingScreen = ({ route, navigation }) => {
       };
       // console.log(address, "--- checked Billing Address= shippingAddress");
     } else {
-      if (
-        !firstName ||
-        !lastName ||
-        !AddressLine1 ||
-        !countryCode ||
-        !postalCode ||
-        !city
-      ) {
-        alert("Please fill all the fields marked with *");
+      await ValidateAll(billingValidationSchema, addr, setErrors, dataIsValid);
+      if (!countryCode) {
+        setCountryError(() => true);
+      } else {
+        setCountryError(() => false);
+      }
+
+      if (!dataIsValid.current || countryCode === "") {
+        console.log(
+          dataIsValid.current,
+          "----",
+          countryCode,
+          "---before alert"
+        );
+        alert("Please provide the details");
+        return;
       } else {
         // Creating an object to store the user's input
-        address = {
-          first_name: firstName,
-          last_name: lastName,
-          address_1: AddressLine1,
-          address_2: AddressLine2,
-          city,
-          province,
-          postal_code: postalCode,
-          phone,
-          company,
+        finalAddress = {
+          first_name: addr.firstName,
+          last_name: addr.lastName,
+          address_1: addr.AddressLine1,
+          address_2: addr.AddressLine2,
+          city: addr.city,
+          province: addr.province,
+          postal_code: addr.postalCode,
+          phone: addr.phone,
+          company: addr.company,
           country_code: countryCode,
         };
-        // console.log(address, "---set billingAddress unchecked ");
+        console.log(finalAddress, "---before UpdatingCart ");
       }
     }
-
-    const BillingDetailsCart = await AddBillingDetailsFunction(cartId, address);
-    // console.log(
-    //   BillingDetailsCart.billing_address,
-    //   "---- BillingDetailsCart.billing_address from handleBillingData"
-    // );
+    console.log("going for updation");
+    setIsUpdatingCart(true);
+    const BillingDetailsCart = await AddBillingDetailsFunction(
+      cartId,
+      finalAddress
+    );
+    console.log(
+      BillingDetailsCart.billing_address,
+      "---- BillingDetailsCart.billing_address from handleBillingData"
+    );
     await updateCart(BillingDetailsCart);
     setIsUpdatingCart(false);
     navigation.navigate("Checkout-Delivery", { cartId: cartId });
@@ -126,7 +124,9 @@ const BillingScreen = ({ route, navigation }) => {
   return (
     // Creating a view to hold the user's input
 
-    <View style={styles.container}>
+    <View
+      style={[styles.container, { marginBottom: keyboardVisible ? 10 : 70 }]}
+    >
       {isUpdatingCart && <LoadingModal isLoading={isUpdatingCart} />}
 
       <ScrollView>
@@ -150,26 +150,12 @@ const BillingScreen = ({ route, navigation }) => {
 
             <AddressForm
               {...{
-                setFirstName,
-                firstName,
-                setLastName,
-                lastName,
-                setAddressLine1,
-                AddressLine1,
-                setAddressLine2,
-                AddressLine2,
-                setCity,
-                city,
+                addr,
+                setAddr,
                 countryCode,
                 setCountryCode,
-                setPostalCode,
-                postalCode,
-                setProvince,
-                province,
-                setPhone,
-                phone,
-                setCompany,
-                company,
+                errors,
+                countryError,
               }}
             />
           </View>

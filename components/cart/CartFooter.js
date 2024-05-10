@@ -13,6 +13,31 @@ const CartFooter = () => {
   // console.log(cart.total);
   return (
     <View>
+      <View style={styles.checkoutBtn}>
+        {/* A button to add more Items*/}
+        <Pressable
+          onPress={() =>
+            navigation.navigate("Store", {
+              screen: "StoreScreen",
+              params: {
+                cartId: cart.id,
+              },
+            })
+          }
+          style={({ pressed }) => [
+            { opacity: pressed ? 0.5 : 1 },
+            [
+              styles.pressable,
+              { width: "50%", alignSelf: "flex-start", marginTop: 10 },
+            ],
+          ]}
+        >
+          <Text style={[styles.checkoutText, { fontSize: 16 }]}>
+            + Add More Items
+          </Text>
+        </Pressable>
+      </View>
+
       <View style={styles.row}>
         <Text style={styles.cartTotalText}>Items</Text>
 

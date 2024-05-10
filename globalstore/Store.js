@@ -5,13 +5,11 @@ const StoreContext = createContext();
 const initialState = {
   products: [],
   cart: {},
-  order: {},
 };
 
 const ACTIONS = {
   GET_PRODUCTS: "GET_PRODUCTS",
   UPDATE_CART: "UPDATE_CART",
-  UPDATE_ORDER: "UPDATE_ORDER",
 };
 
 const StoreReducer = (state, action) => {
@@ -26,12 +24,6 @@ const StoreReducer = (state, action) => {
       return {
         ...state,
         cart: { ...state.cart, ...action.payload },
-      };
-    case ACTIONS.UPDATE_ORDER:
-      console.log(action.payload, "-----this is from order store");
-      return {
-        ...state,
-        cart: { ...state.order, ...action.payload },
       };
     default:
       return state;
@@ -49,14 +41,8 @@ export const StoreProvider = ({ children }) => {
     dispatch({ type: ACTIONS.UPDATE_CART, payload: cartItems });
   };
 
-  const updateOrder = (order) => {
-    dispatch({ type: ACTIONS.UPDATE_ORDER, payload: order });
-  };
-
   return (
-    <StoreContext.Provider
-      value={{ state, getProducts, updateCart, updateOrder }}
-    >
+    <StoreContext.Provider value={{ state, getProducts, updateCart }}>
       {children}
     </StoreContext.Provider>
   );

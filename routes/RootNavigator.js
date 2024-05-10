@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import StoreProductNavigator from "./StoreProductNavigator";
 import CartNavigator from "./CartNavigator";
 import Home from "../screens/HomeScreen";
-import Account from "../screens/AccountScreen";
+import AccountNavigator from "./AccountNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -86,8 +86,8 @@ function RootNavigator() {
         />
 
         <Tab.Screen
-          name="Account"
-          component={Account}
+          name="My Space"
+          component={AccountNavigator}
           options={{
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="account" size={24} color={color} />

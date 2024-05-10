@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet } from "react-native";
-const AccountScreen = () => {
+
+const AddressScreen = () => {
   return (
-    <View styles={styles.container}>
-      <Text styles={styles.text}>AccountScreen Screen</Text>
+    <View style={styles.container}>
+      <Text>AddressScreen</Text>
     </View>
   );
 };
@@ -13,10 +14,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  text: {
-    fontSize: 30,
-    textAlign: "center",
-  },
 });
 
-export default AccountScreen;
+export default AddressScreen;

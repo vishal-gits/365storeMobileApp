@@ -2,56 +2,83 @@ import { View, StyleSheet, Text } from "react-native";
 import { equalAddr } from "../../../utils/addressEqualCheck";
 
 const ReviewAddress = ({ shippingAddress, billingAddress, email }) => {
-  const equalAddress = equalAddr(shippingAddress, billingAddress);
+  if (billingAddress) {
+    const equalAddress = equalAddr(shippingAddress, billingAddress);
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>Address</Text>
-      <View style={styles.addressBlock}>
-        <View style={styles.addressCol}>
-          <Text style={styles.innerAddressHeader}>Shipping Address</Text>
-          <Text style={styles.text}>
-            {`${shippingAddress.first_name} ${shippingAddress.last_name}`}
-          </Text>
-          <Text
-            style={styles.text}
-          >{`${shippingAddress.address_1} ${shippingAddress.address_2}`}</Text>
-          <Text style={styles.text}>
-            {shippingAddress.city + " " + shippingAddress.postal_code}
-          </Text>
-          {shippingAddress.state && <Text>{shippingAddress.state}</Text>}
-          {shippingAddress.phone && (
-            <Text style={styles.text}>Phone:{shippingAddress.phone}</Text>
-          )}
-          <Text style={styles.text}>Email: {email}</Text>
-        </View>
-        <View style={styles.addressCol}>
-          <Text style={styles.innerAddressHeader}>Billing Address</Text>
-          {equalAddress ? (
+    return (
+      <View style={styles.container}>
+        <Text style={styles.headerText}>Address</Text>
+        <View style={styles.addressBlock}>
+          <View style={styles.addressCol}>
+            <Text style={styles.innerAddressHeader}>Shipping Address</Text>
             <Text style={styles.text}>
-              Billing address same as shipping address
+              {`${shippingAddress.first_name} ${shippingAddress.last_name}`}
             </Text>
-          ) : (
-            <>
+            <Text
+              style={styles.text}
+            >{`${shippingAddress.address_1} ${shippingAddress.address_2}`}</Text>
+            <Text style={styles.text}>
+              {shippingAddress.city + " " + shippingAddress.postal_code}
+            </Text>
+            {shippingAddress.state && <Text>{shippingAddress.state}</Text>}
+            {shippingAddress.phone && (
+              <Text style={styles.text}>Phone:{shippingAddress.phone}</Text>
+            )}
+            <Text style={styles.text}>Email: {email}</Text>
+          </View>
+          <View style={styles.addressCol}>
+            <Text style={styles.innerAddressHeader}>Billing Address</Text>
+            {equalAddress ? (
               <Text style={styles.text}>
-                {`${billingAddress.first_name} ${billingAddress.last_name}`}
+                Billing address same as shipping address
               </Text>
-              <Text
-                style={styles.text}
-              >{`${billingAddress.address_1} ${billingAddress.address_2}`}</Text>
-              <Text style={styles.text}>
-                {billingAddress.city + " " + billingAddress.postal_code}
-              </Text>
-              {billingAddress.state && <Text>{billingAddress.state}</Text>}
-              {billingAddress.phone && (
-                <Text style={styles.text}>Phone:{billingAddress.phone}</Text>
-              )}
-            </>
-          )}
+            ) : (
+              <>
+                <Text style={styles.text}>
+                  {`${billingAddress.first_name} ${billingAddress.last_name}`}
+                </Text>
+                <Text
+                  style={styles.text}
+                >{`${billingAddress.address_1} ${billingAddress.address_2}`}</Text>
+                <Text style={styles.text}>
+                  {billingAddress.city + " " + billingAddress.postal_code}
+                </Text>
+                {billingAddress.state && <Text>{billingAddress.state}</Text>}
+                {billingAddress.phone && (
+                  <Text style={styles.text}>Phone:{billingAddress.phone}</Text>
+                )}
+              </>
+            )}
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.headerText}>Address</Text>
+        <View style={styles.addressBlock}>
+          <View style={styles.addressCol}>
+            <Text style={styles.innerAddressHeader}>Shipping Address</Text>
+            <Text style={styles.text}>
+              {`${shippingAddress.first_name} ${shippingAddress.last_name}`}
+            </Text>
+            <Text
+              style={styles.text}
+            >{`${shippingAddress.address_1} ${shippingAddress.address_2}`}</Text>
+            <Text style={styles.text}>
+              {shippingAddress.city + " " + shippingAddress.postal_code}
+            </Text>
+            {shippingAddress.state && <Text>{shippingAddress.state}</Text>}
+            {shippingAddress.phone && (
+              <Text style={styles.text}>Phone:{shippingAddress.phone}</Text>
+            )}
+            <Text style={styles.text}>Email: {email}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

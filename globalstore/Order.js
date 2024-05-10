@@ -2,49 +2,34 @@ import React, { createContext, useContext, useReducer } from "react";
 
 const OrderContext = createContext();
 
-const initialState = {
-  order: {},
-};
+const initialState = {};
 
 const ACTIONS = {
   UPDATE_ORDER: "UPDATE_ORDER",
 };
 
-const StoreReducer = (state, action) => {
+const OrderReducer = (order, action) => {
   switch (action.type) {
     case ACTIONS.UPDATE_ORDER:
-      console.log(action.payload, "-----this is from order store");
-      return {
-        ...state,
-        cart: { ...state.order, ...action.payload },
-      };
+      // console.log(action.payload, "-----this is from order store");
+      return { ...order, ...action.payload };
     default:
-      return state;
+      return order;
   }
 };
 
 export const OrderProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(OrderReducer, initialState);
-
-  const getProducts = (productList) => {
-    dispatch({ type: ACTIONS.GET_PRODUCTS, payload: productList });
-  };
-
-  const updateCart = (cartItems) => {
-    dispatch({ type: ACTIONS.UPDATE_CART, payload: cartItems });
-  };
+  const [order, dispatch] = useReducer(OrderReducer, initialState);
 
   const updateOrder = (order) => {
     dispatch({ type: ACTIONS.UPDATE_ORDER, payload: order });
   };
 
   return (
-    <StoreContext.Provider
-      value={{ state, getProducts, updateCart, updateOrder }}
-    >
+    <OrderContext.Provider value={{ order, updateOrder }}>
       {children}
-    </StoreContext.Provider>
+    </OrderContext.Provider>
   );
 };
 
-export const useStoreContext = () => useContext(StoreContext);
+export const useOrderContext = () => useContext(OrderContext);

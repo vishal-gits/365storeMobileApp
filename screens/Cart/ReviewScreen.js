@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import { useStoreContext } from "../../globalstore/Store";
-import ReviewDisplay from "../../components/cart/review/ReviewDisplay";
+import OrderDetails from "../../components/cart/review/OrderDetails";
 import Button from "../../components/Button";
 
 const ReviewScreen = ({ route, navigation }) => {
@@ -26,7 +26,7 @@ const ReviewScreen = ({ route, navigation }) => {
       total: cart?.total ?? "",
     };
 
-    // console.log(paymentInfo, "---paymentInfo from OrderScreen");
+    console.log(paymentInfo, "---paymentInfo from OrderScreen");
     return (
       <>
         {!state?.cart?.completed_at && (
@@ -34,7 +34,7 @@ const ReviewScreen = ({ route, navigation }) => {
             <View style={styles.container}>
               <Text style={styles.reviewText}>Review Your Order</Text>
 
-              <ReviewDisplay
+              <OrderDetails
                 {...{
                   shippingAddress,
                   billingAddress,

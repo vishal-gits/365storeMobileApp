@@ -1,12 +1,13 @@
 import * as React from "react";
 import { StoreProvider } from "./globalstore/Store";
+import GlobalStateProvider from "./globalstore/GlobalStateProvider";
 import SplashLoader from "./components/SplashLoader";
 
 const App = () => {
   return (
-    <StoreProvider>
+    <GlobalStateProvider>
       <SplashLoader />
-    </StoreProvider>
+    </GlobalStateProvider>
   );
 };
 export default App;

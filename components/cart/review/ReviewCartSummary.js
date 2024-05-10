@@ -1,9 +1,11 @@
 import { View, StyleSheet, Text } from "react-native";
 
-const ReviewCartSummary = ({ cartValues }) => {
+const ReviewCartSummary = ({ cartValues, orderId }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>Cart Summary</Text>
+      <Text style={styles.headerText}>
+        {orderId ? "Order Summary" : "Cart Summary"}
+      </Text>
       <View style={styles.cartBlock}>
         <View style={styles.cartCols}>
           <Text style={styles.text}>Subtotal</Text>

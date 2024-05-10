@@ -1,22 +1,31 @@
 import { Checkbox } from "react-native-paper";
 import { View, Text, StyleSheet } from "react-native";
 import Button from "../../components/Button";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useConfirmPayment } from "@stripe/stripe-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useStoreContext } from "../../globalstore/Store";
+import { useOrderContext } from "../../globalstore/Order";
 import baseURL from "../../constants/url";
 import LoadingModal from "../../utils/LoadingModal";
 
 const OrderScreen = ({ navigation }) => {
-  const { state } = useStoreContext();
+  const { state, updateCart } = useStoreContext();
+  const { updateOrder } = useOrderContext();
   const [checked, setChecked] = useState(false);
   const [isOrdering, setIsOrdering] = useState(false);
   const { confirmPayment, loading } = useConfirmPayment();
 
   const provider_id = state.cart.payment_session.provider_id;
-  console.log(provider_id, "----from OrderScreen");
+  // console.log(provider_id, "----from OrderScreen");
   const cartId = state.cart.id;
+
+  const deliveryDetails = {
+    shippingOptionName:
+      state.cart?.shipping_methods[0]?.shipping_option.name ?? "",
+    shippingOptionAmount:
+      state.cart?.shipping_methods[0]?.shipping_option.amount ?? "",
+  };
 
   const completeCart = async (cartId) => {
     console.log(cartId);
@@ -30,18 +39,25 @@ const OrderScreen = ({ navigation }) => {
       .then((response) => response.json())
       .then(async ({ type, data }) => {
         console.log(type, data);
-        // if (type === "order") {
-        //   // Update your local state with the order data
-        //   console.log(type);
-        //   await updateOrder(data);
-        // } else if (type === "cart") {
-        //   // Handle the error and update your local state with the cart data
-        //   console.log(type);
-        //   await updateCart(data);
-        // }
-        console.log("before AsyncStorage");
-        AsyncStorage.removeItem("cart_id");
-        console.log("afterAsyncStorage");
+        if (type === "order") {
+          // Update your local state with the order data
+          console.log(type);
+          await updateOrder({ ...data, ...deliveryDetails });
+          console.log("before AsyncStorage");
+          await AsyncStorage.removeItem("cart_id");
+          console.log("afterAsyncStorage");
+          setIsOrdering(false);
+          navigation.navigate("Order-Confirmed");
+        } else if (type === "cart") {
+          // Handle the error and update your local state with the cart data
+          console.log(type);
+          await updateCart(data);
+          setIsOrdering(false);
+          alert("There is an error, order cannot be completed");
+        }
+        // console.log("before AsyncStorage");
+        // AsyncStorage.removeItem("cart_id");
+        // console.log("afterAsyncStorage");
       });
   };
 
@@ -85,8 +101,8 @@ const OrderScreen = ({ navigation }) => {
     } else if (provider_id === "manual") {
       await completeCart(cartId);
     }
-    setIsOrdering(false);
-    navigation.navigate("Order-Confirmed");
+    // setIsOrdering(false);
+    // navigation.navigate("Order-Confirmed");
   };
 
   return (
