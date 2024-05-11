@@ -8,7 +8,7 @@ export const registerCustomer = async (
   phone
 ) => {
   console.log(email, password, first_name, last_name, phone);
-  await fetch(`${baseURL}/store/customers`, {
+  const customer = await fetch(`${baseURL}/store/customers`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -26,8 +26,11 @@ export const registerCustomer = async (
     .then(async ({ customer }) => {
       console.log(customer);
       console.log(customer.id, "registered");
-      await loginCustomer(email, password);
+      const loggedInCustomer = await loginCustomer(email, password);
+      console.log(loggedInCustomer);
+      return loggedInCustomer;
     });
+  return customer;
 };
 
 export const logoutCustomer = async () => {
@@ -65,4 +68,42 @@ export const loginCustomer = async (email, password) => {
     });
   console.log(customer, "---outside fetch");
   return customer;
+};
+
+export const getProfileCompletion = (customer) => {
+  let count = 0;
+
+  if (!customer) {
+    return 0;
+  }
+
+  if (customer.email) {
+    count++;
+  }
+
+  if (customer.first_name && customer.last_name) {
+    count++;
+  }
+
+  if (customer.phone) {
+    count++;
+  }
+
+  if (customer.billing_address) {
+    count++;
+  }
+
+  return (count / 4) * 100;
+};
+
+export const getOrders = async () => {
+  const orders = await fetch(`${baseURL}/store/customers/me/orders`, {
+    credentials: "include",
+  })
+    .then((response) => response.json())
+    .then(({ orders }) => {
+      console.log(orders, "----from getOrders");
+      return orders;
+    });
+  return orders;
 };

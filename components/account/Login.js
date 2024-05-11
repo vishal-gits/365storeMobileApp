@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Keyboard,
+} from "react-native";
 import { useState } from "react";
 import Button from "../../components/Button";
 import { Formik } from "formik";
@@ -6,15 +13,26 @@ import * as yup from "yup";
 import { loginCustomer } from "../../utils/CustomerFunctions";
 import { useCustomerContext } from "../../globalstore/Customer";
 import { loginValidationSchema } from "../../utils/validationSchema";
+import { useEffect } from "react";
 
 const Login = ({ setMode, navigation }) => {
   const { customer, updateCustomer } = useCustomerContext();
 
-  if (customer.id) {
-    console.log("hey");
-  } else {
-    console.log("nay");
-  }
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   return (
     <>
@@ -30,7 +48,7 @@ const Login = ({ setMode, navigation }) => {
             const customerDetails = await loginCustomer(email, password);
             console.log(customerDetails, "---customerDetails");
             updateCustomer(customerDetails);
-            navigation.navigate("Overview");
+            navigation.navigate("Customer", { screen: "Overview" });
           }}
           validationSchema={loginValidationSchema}
         >
@@ -66,41 +84,45 @@ const Login = ({ setMode, navigation }) => {
               {errors.password && touched.password && (
                 <Text style={styles.errorText}>{errors.password}</Text>
               )}
-              <Pressable
-                onPress={handleSubmit}
-                style={({ pressed }) => [
-                  { opacity: pressed ? 0.5 : 1 },
-                  styles.signIn,
-                ]}
-                disabled={!isValid}
-              >
-                <Text style={styles.signInText}>Login</Text>
-              </Pressable>
+              {!keyboardVisible && (
+                <Pressable
+                  onPress={handleSubmit}
+                  style={({ pressed }) => [
+                    { opacity: pressed ? 0.5 : 1 },
+                    styles.signIn,
+                  ]}
+                  disabled={!isValid}
+                >
+                  <Text style={styles.signInText}>Login</Text>
+                </Pressable>
+              )}
             </>
           )}
         </Formik>
       </View>
-      <View style={styles.joinRow}>
-        <Text
-          style={[
-            styles.text,
-            {
-              paddingRight: 10,
-              fontStyle: "italic",
-              textDecorationLine: "underline",
-            },
-          ]}
-        >
-          Not a member?
-        </Text>
-        <Button
-          title="Register"
-          small="true"
-          onPress={() => {
-            setMode("Register");
-          }}
-        />
-      </View>
+      {!keyboardVisible && (
+        <View style={styles.joinRow}>
+          <Text
+            style={[
+              styles.text,
+              {
+                paddingRight: 10,
+                fontStyle: "italic",
+                textDecorationLine: "underline",
+              },
+            ]}
+          >
+            Not a member?
+          </Text>
+          <Button
+            title="Register"
+            small="true"
+            onPress={() => {
+              setMode("Register");
+            }}
+          />
+        </View>
+      )}
     </>
   );
 };

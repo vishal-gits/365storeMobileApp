@@ -1,21 +1,50 @@
-import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
-import { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Keyboard,
+} from "react-native";
+import { useState, useEffect } from "react";
 import Button from "../../components/Button";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { registerValidationSchema } from "../../utils/validationSchema";
 import { registerCustomer } from "../../utils/CustomerFunctions";
+import { useCustomerContext } from "../../globalstore/Customer";
 
 const Register = ({ setMode, navigation }) => {
+  const { updateCustomer } = useCustomerContext();
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
   return (
     <>
-      <Text style={styles.textHeader}>Become a 365 Store Member</Text>
-      <Text style={styles.text}>
-        Create your 365 Store Member profile, and get access to an enhanced
-        shopping experience.
-      </Text>
+      {!keyboardVisible && (
+        <View style={styles.headerContainer}>
+          <Text style={styles.textHeader}>Become a 365 Store Member</Text>
+          <Text style={styles.text}>
+            Create your 365 Store Member profile, and get access to an enhanced
+            shopping experience.
+          </Text>
+        </View>
+      )}
 
-      <View style={styles.loginContainer}>
+      <View style={styles.registerContainer}>
         <Formik
           initialValues={{
             firstName: "",
@@ -30,15 +59,17 @@ const Register = ({ setMode, navigation }) => {
             const last_name = values.lastName;
             const phone = values.phone;
             const password = values.password;
-            await registerCustomer(
+            const customerDetails = await registerCustomer(
               email,
               password,
               first_name,
               last_name,
               phone
             );
+            console.log(customerDetails, "---customerDetails form Register");
+            updateCustomer(customerDetails);
             setMode("Login");
-            navigation.navigate("Overview");
+            navigation.navigate("Customer", { screen: "Overview" });
           }}
           validationSchema={registerValidationSchema}
         >
@@ -105,45 +136,51 @@ const Register = ({ setMode, navigation }) => {
                 <Text style={styles.errorText}>{errors.password}</Text>
               )}
 
-              <Text style={styles.text}>
-                By creating an account, you agree to 365 Store's Privacy Policy
-                and Terms of Use.
-              </Text>
-              <Pressable
-                onPress={handleSubmit}
-                style={({ pressed }) => [
-                  { opacity: pressed ? 0.5 : 1 },
-                  styles.signIn,
-                ]}
-                disabled={!isValid}
-              >
-                <Text style={styles.signInText}>Register</Text>
-              </Pressable>
+              {!keyboardVisible && (
+                <Text style={styles.text}>
+                  By creating an account, you agree to 365 Store's Privacy
+                  Policy and Terms of Use.
+                </Text>
+              )}
+              {!keyboardVisible && (
+                <Pressable
+                  onPress={handleSubmit}
+                  style={({ pressed }) => [
+                    { opacity: pressed ? 0.5 : 1 },
+                    styles.signIn,
+                  ]}
+                  disabled={!isValid}
+                >
+                  <Text style={styles.signInText}>Register</Text>
+                </Pressable>
+              )}
             </>
           )}
         </Formik>
       </View>
-      <View style={styles.joinRow}>
-        <Text
-          style={[
-            styles.text,
-            {
-              paddingRight: 10,
-              fontStyle: "italic",
-              textDecorationLine: "underline",
-            },
-          ]}
-        >
-          Already a member?
-        </Text>
-        <Button
-          title="Login"
-          small="true"
-          onPress={() => {
-            setMode("Login");
-          }}
-        />
-      </View>
+      {!keyboardVisible && (
+        <View style={styles.joinRow}>
+          <Text
+            style={[
+              styles.text,
+              {
+                paddingRight: 10,
+                fontStyle: "italic",
+                textDecorationLine: "underline",
+              },
+            ]}
+          >
+            Already a member?
+          </Text>
+          <Button
+            title="Login"
+            small="true"
+            onPress={() => {
+              setMode("Login");
+            }}
+          />
+        </View>
+      )}
     </>
   );
 };
@@ -158,7 +195,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 5,
   },
-  loginContainer: {
+  headerContainer: {
+    width: "75%",
+    alignItems: "center",
+  },
+  registerContainer: {
     width: "80%",
     alignItems: "center",
     backgroundColor: "white",

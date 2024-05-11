@@ -4,21 +4,36 @@ import Button from "../../components/Button";
 import { Formik } from "formik";
 import Login from "../../components/account/Login";
 import Register from "../../components/account/Register";
+import { useCustomerContext } from "../../globalstore/Customer";
 
 const AccountScreen = ({ navigation }) => {
+  const { customer } = useCustomerContext();
+
+  const customerId = customer?.id;
+  console.log(customerId, "----from AccountScreen");
   const [mode, setMode] = useState("Login");
 
-  // useEffect(() => {
-  //   navigation.setOptions({
-  //     title: mode === "Register" ? "Register" : "Login",
-  //   });
-  // }, [navigation, mode]);
+  useEffect(() => {
+    navigation.setOptions({
+      title: mode === "Register" ? "Register" : "Login",
+    });
+  }, [navigation, mode]);
 
   return (
     <View style={styles.container}>
       {mode === "Login" && <Login {...{ setMode, navigation }} />}
       {mode === "Register" && <Register {...{ setMode, navigation }} />}
     </View>
+    // <>
+    //   {customerId ? (
+    //     <Overview />
+    //   ) : (
+    //     <View style={styles.container}>
+    //       {mode === "Login" && <Login {...{ setMode, navigation }} />}
+    //       {mode === "Register" && <Register {...{ setMode, navigation }} />}
+    //     </View>
+    //   )}
+    // </>
   );
 };
 

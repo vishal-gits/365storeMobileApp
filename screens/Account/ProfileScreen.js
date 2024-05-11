@@ -15,7 +15,8 @@ const ProfileScreen = ({ navigation }) => {
         onPress={async () => {
           await logoutCustomer();
           deleteCustomer();
-          navigation.navigate("Account");
+
+          navigation.navigate("Login");
         }}
       />
     </View>
