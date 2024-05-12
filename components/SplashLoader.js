@@ -37,8 +37,8 @@ export default function SplashLoader() {
             .then((response) => response.json())
             .then(({ cart }) => updateCart(cart));
         }
-        console.log(cartId);
-        console.log(state.cart, "--- this is state.cart from splash loader");
+        // console.log(cartId);
+        // console.log(state.cart, "--- this is state.cart from splash loader");
 
         await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {

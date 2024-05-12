@@ -27,12 +27,12 @@ export const ValidateAll = async (
     .isValid(data)
     .then((valid) => {
       if (valid) {
-        console.log("Data is valid");
+        // console.log("Data is valid");
         // Clear errors if data is valid
         setErrors({});
         dataIsValid.current = true;
       } else {
-        console.log("Data is invalid");
+        // console.log("Data is invalid");
         // Validate individual fields to get errors
         validationSchema
           .validate(data, { abortEarly: false })
@@ -46,7 +46,7 @@ export const ValidateAll = async (
             await setErrors(
               validationErrors.inner.reduce((acc, err) => {
                 acc[err.path] = err.message;
-                console.log(acc);
+                // console.log(acc);
                 return acc;
               }, {})
             );

@@ -28,8 +28,8 @@ const CartEdit = ({ item, setIsModalVisible }) => {
   const [isUpdatingCart, setIsUpdatingCart] = useState(false);
   const cartId = state.cart.id;
   const lineItemId = item.id;
-  console.log(lineItemId, "----lineItemId from CartEdit");
-  console.log(item, "---item from cartEdit ");
+  // console.log(lineItemId, "----lineItemId from CartEdit");
+  // console.log(item, "---item from cartEdit ");
 
   const quantityArr = qtyArr();
 

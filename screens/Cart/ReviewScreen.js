@@ -26,7 +26,7 @@ const ReviewScreen = ({ route, navigation }) => {
       total: cart?.total ?? "",
     };
 
-    console.log(paymentInfo, "---paymentInfo from OrderScreen");
+    // console.log(paymentInfo, "---paymentInfo from OrderScreen");
     return (
       <>
         {!state?.cart?.completed_at && (

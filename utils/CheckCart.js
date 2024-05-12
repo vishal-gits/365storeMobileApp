@@ -7,7 +7,7 @@ const CheckCart = async () => {
   const cartId = await AsyncStorage.getItem("cart_id");
 
   if (cartId) {
-    console.log(cartId, "--- from checkCart");
+    // console.log(cartId, "--- from checkCart");
     return cartId;
   } else {
     const cartId = await fetch(`${baseURL}/store/carts`, {
@@ -23,7 +23,7 @@ const CheckCart = async () => {
       .then((response) => response.json())
       .then(async ({ cart }) => {
         await AsyncStorage.setItem("cart_id", cart.id);
-        console.log(cart.id, "---from getCardId");
+        // console.log(cart.id, "---from getCardId");
         return cart.id;
       });
     return cartId;

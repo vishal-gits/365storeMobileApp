@@ -8,11 +8,11 @@ import CartFooter from "../../components/cart/CartFooter";
 const CartScreen = () => {
   const { state } = useStoreContext();
 
-  console.log(
-    state.cart.items,
-    Object.keys(state.cart.items).length,
-    "---cartItems from Cart Screen"
-  );
+  // console.log(
+  //   state.cart.items,
+  //   Object.keys(state.cart.items).length,
+  //   "---cartItems from Cart Screen"
+  // );
   return (
     <View style={styles.container}>
       {Object.keys(state.cart.items).length !== 0 ? (

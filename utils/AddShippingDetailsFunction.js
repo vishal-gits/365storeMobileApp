@@ -1,12 +1,12 @@
 import baseURL from "../constants/url";
 
 const AddShippingDetailsFunction = async (cartId, address, email) => {
-  console.log(
-    cartId,
-    address,
-    email,
-    "----cartId and address from AddShippingDetailsFunction"
-  );
+  // console.log(
+  //   cartId,
+  //   address,
+  //   email,
+  //   "----cartId and address from AddShippingDetailsFunction"
+  // );
 
   const cart = await fetch(`${baseURL}/store/carts/${cartId}`, {
     method: "POST",

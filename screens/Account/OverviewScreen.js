@@ -1,23 +1,27 @@
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useCustomerContext } from "../../globalstore/Customer";
 import { capitalize } from "lodash";
 import { getProfileCompletion } from "../../utils/CustomerFunctions";
 import { useEffect, useState } from "react";
 import { getOrders } from "../../utils/CustomerFunctions";
-import { AntDesign } from "@expo/vector-icons";
+import OrderTable from "../../components/account/OrderTable";
+import Loading from "../../utils/Loading";
 
 const OverviewScreen = () => {
   const { customer } = useCustomerContext();
   const [orders, setOrders] = useState("");
-  console.log(customer, customer?.id, "--- from Overview Screen");
+  const [isLoading, setIsLoading] = useState(false);
+  // console.log(customer, customer?.id, "--- from Overview Screen");
 
   useEffect(() => {
+    setIsLoading(true);
     const getAllOrders = async () => {
       const allOrders = await getOrders();
-      console.log(allOrders, "---allOrders from useEffect");
+      // console.log(allOrders, "---allOrders from useEffect");
       setOrders(allOrders);
     };
     getAllOrders();
+    setIsLoading(false);
   }, []);
 
   return (
@@ -57,31 +61,13 @@ const OverviewScreen = () => {
               </Text>
             </View>
 
-            {orders.map((order) => {
-              return (
-                <View key={order.id} style={styles.orderHeaderRow}>
-                  <Text style={[styles.rowText, { width: "20%" }]}>
-                    {order.display_id}
-                    {console.log(order.shipping_methods, "---shipping_methods")}
-                  </Text>
-                  <Text style={[styles.rowText, { width: "40%" }]}>
-                    {new Date(order.created_at).toDateString()}
-                  </Text>
-                  <Text style={[styles.rowText, { width: "25%" }]}>
-                    ${(order.total / 100).toFixed(2)}
-                  </Text>
-
-                  <Pressable
-                    style={[
-                      styles.rowText,
-                      { width: "20%", alignItems: "center" },
-                    ]}
-                  >
-                    <AntDesign name="pluscircle" size={26} color="#000080" />
-                  </Pressable>
-                </View>
-              );
-            })}
+            {isLoading ? (
+              <Loading loadingText="...Getting Orders" />
+            ) : (
+              orders.map((order) => {
+                return <OrderTable key={order.id} order={order} />;
+              })
+            )}
           </View>
         ) : (
           <Text>You do not have any recent Orders</Text>
@@ -118,10 +104,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontStyle: "italic",
   },
-  orderTable: {
-    // flex: 1,
-    paddingBottom: 10,
-  },
+
   profileRow: {
     flexDirection: "column",
     justifyContent: "flex-start",
@@ -153,11 +136,6 @@ const styles = StyleSheet.create({
   rowHeaderText: {
     fontSize: 16,
     fontWeight: "bold",
-    paddingHorizontal: 5,
-    textAlign: "center",
-  },
-  rowText: {
-    fontSize: 16,
     paddingHorizontal: 5,
     textAlign: "center",
   },

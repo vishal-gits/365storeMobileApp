@@ -20,7 +20,7 @@ const StoreReducer = (state, action) => {
         products: [...state.products, ...action.payload],
       };
     case ACTIONS.UPDATE_CART:
-      console.log(action.payload, "-----this is from cart store");
+      // console.log(action.payload, "-----this is from cart store");
       return {
         ...state,
         cart: { ...state.cart, ...action.payload },

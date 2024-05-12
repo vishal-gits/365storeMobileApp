@@ -82,12 +82,12 @@ const BillingScreen = ({ route, navigation }) => {
       }
 
       if (!dataIsValid.current || countryCode === "") {
-        console.log(
-          dataIsValid.current,
-          "----",
-          countryCode,
-          "---before alert"
-        );
+        // console.log(
+        //   dataIsValid.current,
+        //   "----",
+        //   countryCode,
+        //   "---before alert"
+        // );
         alert("Please provide the details");
         return;
       } else {
@@ -104,19 +104,19 @@ const BillingScreen = ({ route, navigation }) => {
           company: addr.company,
           country_code: countryCode,
         };
-        console.log(finalAddress, "---before UpdatingCart ");
+        // console.log(finalAddress, "---before UpdatingCart ");
       }
     }
-    console.log("going for updation");
+    // console.log("going for updation");
     setIsUpdatingCart(true);
     const BillingDetailsCart = await AddBillingDetailsFunction(
       cartId,
       finalAddress
     );
-    console.log(
-      BillingDetailsCart.billing_address,
-      "---- BillingDetailsCart.billing_address from handleBillingData"
-    );
+    // console.log(
+    //   BillingDetailsCart.billing_address,
+    //   "---- BillingDetailsCart.billing_address from handleBillingData"
+    // );
     await updateCart(BillingDetailsCart);
     setIsUpdatingCart(false);
     navigation.navigate("Checkout-Delivery", { cartId: cartId });

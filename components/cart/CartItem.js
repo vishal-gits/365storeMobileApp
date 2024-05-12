@@ -8,7 +8,7 @@ import { Feather } from "@expo/vector-icons";
 import CartEdit from "./CartEdit";
 
 export default function CartItem({ item }) {
-  console.log(item.id, "---ItemIds from Cart Item");
+  // console.log(item.id, "---ItemIds from Cart Item");
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 

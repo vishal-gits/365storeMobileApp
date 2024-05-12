@@ -46,7 +46,7 @@ const Login = ({ setMode, navigation }) => {
             const email = values.email;
             const password = values.password;
             const customerDetails = await loginCustomer(email, password);
-            console.log(customerDetails, "---customerDetails");
+            // console.log(customerDetails, "---customerDetails");
             updateCustomer(customerDetails);
             navigation.navigate("Customer", { screen: "Overview" });
           }}

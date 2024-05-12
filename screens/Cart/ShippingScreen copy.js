@@ -48,7 +48,7 @@ const ShippingScreen = ({ route, navigation }) => {
   }, []);
 
   const handleShippingData = async () => {
-    console.log("i am pressed");
+    // console.log("i am pressed");
     if (
       !firstName ||
       !lastName ||
@@ -74,17 +74,17 @@ const ShippingScreen = ({ route, navigation }) => {
         company,
         country_code: countryCode,
       };
-      console.log(address);
-      console.log(email, "----email before post ");
+      // console.log(address);
+      // console.log(email, "----email before post ");
       const ShippingDetailsCart = await AddShippingDetailsFunction(
         cartId,
         address,
         email
       );
-      console.log(
-        ShippingDetailsCart,
-        "---- shippindDetailsCart from handleShippingData"
-      );
+      // console.log(
+      //   ShippingDetailsCart,
+      //   "---- shippindDetailsCart from handleShippingData"
+      // );
       await updateCart(ShippingDetailsCart);
       setIsUpdatingCart(false);
       navigation.navigate("Checkout-Billing", {

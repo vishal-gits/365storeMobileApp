@@ -28,7 +28,7 @@ const OrderScreen = ({ navigation }) => {
   };
 
   const completeCart = async (cartId) => {
-    console.log(cartId);
+    // console.log(cartId);
     await fetch(`${baseURL}/store/carts/${cartId}/complete`, {
       method: "POST",
       credentials: "include",
@@ -41,16 +41,16 @@ const OrderScreen = ({ navigation }) => {
         console.log(type, data);
         if (type === "order") {
           // Update your local state with the order data
-          console.log(type);
+          // console.log(type);
           await updateOrder({ ...data, ...deliveryDetails });
-          console.log("before AsyncStorage");
+          // console.log("before AsyncStorage");
           await AsyncStorage.removeItem("cart_id");
-          console.log("afterAsyncStorage");
+          // console.log("afterAsyncStorage");
           setIsOrdering(false);
           navigation.navigate("Order-Confirmed");
         } else if (type === "cart") {
           // Handle the error and update your local state with the cart data
-          console.log(type);
+          // console.log(type);
           await updateCart(data);
           setIsOrdering(false);
           alert("There is an error, order cannot be completed");
@@ -63,10 +63,10 @@ const OrderScreen = ({ navigation }) => {
 
   const handlePlaceOrder = async () => {
     setIsOrdering(true);
-    console.log("i am pressed");
+    // console.log("i am pressed");
     if (provider_id === "stripe") {
       const clientSecret = state.cart.payment_session.data.client_secret;
-      console.log(clientSecret, "--clientSecret from handlePayment");
+      // console.log(clientSecret, "--clientSecret from handlePayment");
 
       const billingDetails = {
         address: {
@@ -84,7 +84,7 @@ const OrderScreen = ({ navigation }) => {
           state.cart.billing_address.last_name,
         phone: state.cart.billing_address.phone ?? undefined,
       };
-      console.log(billingDetails);
+      // console.log(billingDetails);
 
       const { paymentIntent, error } = await confirmPayment(clientSecret, {
         paymentMethodType: "Card",

@@ -7,7 +7,7 @@ export const registerCustomer = async (
   last_name,
   phone
 ) => {
-  console.log(email, password, first_name, last_name, phone);
+  // console.log(email, password, first_name, last_name, phone);
   const customer = await fetch(`${baseURL}/store/customers`, {
     method: "POST",
     credentials: "include",
@@ -24,27 +24,27 @@ export const registerCustomer = async (
   })
     .then((response) => response.json())
     .then(async ({ customer }) => {
-      console.log(customer);
-      console.log(customer.id, "registered");
+      // console.log(customer);
+      // console.log(customer.id, "registered");
       const loggedInCustomer = await loginCustomer(email, password);
-      console.log(loggedInCustomer);
+      // console.log(loggedInCustomer);
       return loggedInCustomer;
     });
   return customer;
 };
 
 export const logoutCustomer = async () => {
-  console.log("inside logout function");
+  // console.log("inside logout function");
   await fetch(`${baseURL}/store/auth`, {
     method: "DELETE",
     credentials: "include",
   }).then(() => {
-    console.log("customer is logged out");
+    // console.log("customer is logged out");
   });
 };
 
 export const loginCustomer = async (email, password) => {
-  console.log(email, password);
+  // console.log(email, password);
   const customer = await fetch(`${baseURL}/store/auth`, {
     method: "POST",
     credentials: "include",
@@ -58,15 +58,15 @@ export const loginCustomer = async (email, password) => {
   })
     .then((response) => response.json())
     .then(({ customer }) => {
-      console.log(customer, "--from login");
-      console.log(customer.id, "logged In");
+      // console.log(customer, "--from login");
+      // console.log(customer.id, "logged In");
       return customer;
     })
     .catch((error) => {
       console.log("Server response:", error.response);
       console.log("Error:", error);
     });
-  console.log(customer, "---outside fetch");
+  // console.log(customer, "---outside fetch");
   return customer;
 };
 
@@ -102,7 +102,7 @@ export const getOrders = async () => {
   })
     .then((response) => response.json())
     .then(({ orders }) => {
-      console.log(orders, "----from getOrders");
+      // console.log(orders, "----from getOrders");
       return orders;
     });
   return orders;

@@ -1,20 +1,17 @@
-import { View, Text, StyleSheet, SafeAreaView, StatusBar } from "react-native";
-import { useOrderContext } from "../../globalstore/Order";
-import { useEffect } from "react";
-import baseURL from "../../constants/url";
-import OrderDetails from "../../components/cart/review/OrderDetails";
-const ConfirmedOrderScreen = () => {
-  const { order, updateOrder } = useOrderContext();
-  // console.log(order, "----order from confirmedOrderScreen");
-  // console.log(order.items, "----orderItems from confirmedOrderscreen");
-  const orderId = order.id;
-  const orderItems = order.items;
+import { View, StyleSheet, Text, StatusBar } from "react-native";
+import Button from "../Button";
+import OrderDetails from "../cart/review/OrderDetails";
+
+const OrderModal = ({ isModalVisible, setIsModalVisible, order }) => {
+  console.log(order.display_id, "--from orderModal");
+  const orderId = order?.id;
+  console.log(orderId, "---orderId from orderModal");
+  const orderItems = order?.items;
   const shippingAddress = order?.shipping_address ?? "";
   const email = order?.email ?? "";
-  // console.log(order.shippingOptionAmount, order.shippingOptionName);
   const deliveryDetails = {
-    name: order.shippingOptionName,
-    amount: order.shippingOptionAmount,
+    name: order?.shipping_methods[0].shipping_option?.name,
+    amount: order?.shipping_methods[0].shipping_option?.amount,
   };
   const orderNumber = order.display_id;
   const orderDate = order.created_at;
@@ -30,16 +27,26 @@ const ConfirmedOrderScreen = () => {
     provider_id: order.payments[0].provider_id,
   };
 
+  const orderStatus = {
+    status: order.status,
+    payment: order?.payment_status,
+    fulfillment: order?.fulfillment_status,
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Your Order</Text>
+        <Button
+          title="close"
+          onPress={() => setIsModalVisible(false)}
+          small={true}
+        />
       </View>
+
       <View style={styles.innerContainer}>
         <Text style={styles.headerText}>
-          Thank you, Your order has been successfully placed
+          Details for order Number {orderNumber}
         </Text>
-
         <OrderDetails
           {...{
             shippingAddress,
@@ -51,7 +58,9 @@ const ConfirmedOrderScreen = () => {
             cartValues,
             orderDate,
             orderNumber,
+            orderStatus,
           }}
+          noEmailText={true}
         />
       </View>
     </View>
@@ -70,6 +79,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     // justifyContent: "center",
     alignItems: "center",
+    justifyContent: "space-around",
   },
   headerText: {
     fontSize: 24,
@@ -90,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmedOrderScreen;
+export default OrderModal;

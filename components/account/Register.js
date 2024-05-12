@@ -66,7 +66,7 @@ const Register = ({ setMode, navigation }) => {
               last_name,
               phone
             );
-            console.log(customerDetails, "---customerDetails form Register");
+            // console.log(customerDetails, "---customerDetails form Register");
             updateCustomer(customerDetails);
             setMode("Login");
             navigation.navigate("Customer", { screen: "Overview" });

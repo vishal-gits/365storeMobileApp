@@ -5,6 +5,8 @@ import ReviewAddress from "./ReviewAddress";
 import ReviewShippingPayment from "./ReviewShippingPayment";
 import Button from "../../Button";
 import { useState } from "react";
+import OrderProgress from "../../account/OrderProgress";
+
 const OrderDetails = ({
   shippingAddress,
   billingAddress,
@@ -16,6 +18,8 @@ const OrderDetails = ({
   orderId,
   orderDate,
   orderNumber,
+  orderStatus,
+  noEmailText,
 }) => {
   const [toggleMore, setToggleMore] = useState(false);
 
@@ -32,15 +36,18 @@ const OrderDetails = ({
       >
         {orderId && (
           <View>
-            <Text style={styles.text}>
-              We have sent confirmation details to {email}
-            </Text>
+            {!noEmailText && (
+              <Text style={styles.text}>
+                We have sent confirmation details to {email}
+              </Text>
+            )}
             <Text style={styles.text}>Order Number: {orderNumber}</Text>
             <Text style={styles.text}>
               Order Date: {new Date(orderDate).toDateString()}
             </Text>
           </View>
         )}
+        {orderStatus && <OrderProgress {...{ orderStatus }} />}
         <ReviewCartProducts {...{ orderItems }} />
         <ReviewCartSummary {...{ cartValues, orderId }} />
         <Pressable
