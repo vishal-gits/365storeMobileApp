@@ -14,9 +14,11 @@ import { loginCustomer } from "../../utils/CustomerFunctions";
 import { useCustomerContext } from "../../globalstore/Customer";
 import { loginValidationSchema } from "../../utils/validationSchema";
 import { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 
-const Login = ({ setMode, navigation }) => {
+const Login = ({ setMode }) => {
   const { customer, updateCustomer } = useCustomerContext();
+  const navigation = useNavigation();
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
@@ -46,9 +48,15 @@ const Login = ({ setMode, navigation }) => {
             const email = values.email;
             const password = values.password;
             const customerDetails = await loginCustomer(email, password);
-            // console.log(customerDetails, "---customerDetails");
-            updateCustomer(customerDetails);
-            navigation.navigate("Customer", { screen: "Overview" });
+            if (customerDetails?.id) {
+              console.log(customerDetails, "---customerDetails");
+              await updateCustomer(customerDetails);
+              console.log(customer?.id, "---after updating in login");
+
+              navigation.navigate("Customer", { screen: "Overview" });
+            } else {
+              alert("Please check login details");
+            }
           }}
           validationSchema={loginValidationSchema}
         >

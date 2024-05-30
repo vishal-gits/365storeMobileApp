@@ -13,8 +13,8 @@ const AccountNavigator = () => {
 
   return (
     <Stack.Navigator>
-      {!customer.id && <Stack.Screen name="Login" component={AccountScreen} />}
-      {customer.id && (
+      {!customer?.id && <Stack.Screen name="Login" component={AccountScreen} />}
+      {customer?.id && (
         <Stack.Screen
           name="Customer"
           component={CustomerNavigator}

@@ -3,9 +3,9 @@ import Button from "../Button";
 import OrderDetails from "../cart/review/OrderDetails";
 
 const OrderModal = ({ isModalVisible, setIsModalVisible, order }) => {
-  console.log(order.display_id, "--from orderModal");
+  // console.log(order.display_id, "--from orderModal");
   const orderId = order?.id;
-  console.log(orderId, "---orderId from orderModal");
+  // console.log(orderId, "---orderId from orderModal");
   const orderItems = order?.items;
   const shippingAddress = order?.shipping_address ?? "";
   const email = order?.email ?? "";

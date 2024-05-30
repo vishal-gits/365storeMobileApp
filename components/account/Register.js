@@ -13,10 +13,12 @@ import * as yup from "yup";
 import { registerValidationSchema } from "../../utils/validationSchema";
 import { registerCustomer } from "../../utils/CustomerFunctions";
 import { useCustomerContext } from "../../globalstore/Customer";
+import { useNavigation } from "@react-navigation/native";
 
-const Register = ({ setMode, navigation }) => {
+const Register = ({ setMode }) => {
   const { updateCustomer } = useCustomerContext();
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {

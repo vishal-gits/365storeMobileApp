@@ -5,23 +5,20 @@ import { getProfileCompletion } from "../../utils/CustomerFunctions";
 import { useEffect, useState } from "react";
 import { getOrders } from "../../utils/CustomerFunctions";
 import OrderTable from "../../components/account/OrderTable";
-import Loading from "../../utils/Loading";
 
 const OverviewScreen = () => {
   const { customer } = useCustomerContext();
   const [orders, setOrders] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+
   // console.log(customer, customer?.id, "--- from Overview Screen");
 
   useEffect(() => {
-    setIsLoading(true);
     const getAllOrders = async () => {
       const allOrders = await getOrders();
       // console.log(allOrders, "---allOrders from useEffect");
       setOrders(allOrders);
     };
     getAllOrders();
-    setIsLoading(false);
   }, []);
 
   return (
@@ -61,13 +58,9 @@ const OverviewScreen = () => {
               </Text>
             </View>
 
-            {isLoading ? (
-              <Loading loadingText="...Getting Orders" />
-            ) : (
-              orders.map((order) => {
-                return <OrderTable key={order.id} order={order} />;
-              })
-            )}
+            {orders.map((order) => {
+              return <OrderTable key={order.id} order={order} />;
+            })}
           </View>
         ) : (
           <Text>You do not have any recent Orders</Text>

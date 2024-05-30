@@ -39,7 +39,7 @@ export const logoutCustomer = async () => {
     method: "DELETE",
     credentials: "include",
   }).then(() => {
-    // console.log("customer is logged out");
+    console.log("customer is logged out");
   });
 };
 
@@ -58,8 +58,8 @@ export const loginCustomer = async (email, password) => {
   })
     .then((response) => response.json())
     .then(({ customer }) => {
-      // console.log(customer, "--from login");
-      // console.log(customer.id, "logged In");
+      console.log(customer, customer.billing_address, "--from login");
+      console.log(customer.id, "logged In");
       return customer;
     })
     .catch((error) => {

@@ -11,6 +11,8 @@ export default function AddressForm({
   errors,
   emailBlock,
   countryError,
+  noPhone,
+  noCompany,
 }) {
   return (
     // Creating a view to hold the user's input
@@ -112,24 +114,34 @@ export default function AddressForm({
       {errors.province && (
         <Text style={{ color: "red" }}>{errors.province}</Text>
       )}
-      <TextInput
-        onChangeText={(e) => {
-          setAddr({ ...addr, phone: e });
-        }}
-        placeholder="Phone"
-        style={styles.input}
-        value={addr.phone}
-      />
-      {errors.phone && <Text style={{ color: "red" }}>{errors.phone}</Text>}
-      <TextInput
-        onChangeText={(e) => {
-          setAddr({ ...addr, company: e });
-        }}
-        placeholder="Company"
-        style={styles.input}
-        value={addr.company}
-      />
-      {errors.company && <Text style={{ color: "red" }}>{errors.company}</Text>}
+      {!noPhone && (
+        <>
+          <TextInput
+            onChangeText={(e) => {
+              setAddr({ ...addr, phone: e });
+            }}
+            placeholder="Phone"
+            style={styles.input}
+            value={addr.phone}
+          />
+          {errors.phone && <Text style={{ color: "red" }}>{errors.phone}</Text>}
+        </>
+      )}
+      {!noCompany && (
+        <>
+          <TextInput
+            onChangeText={(e) => {
+              setAddr({ ...addr, company: e });
+            }}
+            placeholder="Company"
+            style={styles.input}
+            value={addr.company}
+          />
+          {errors.company && (
+            <Text style={{ color: "red" }}>{errors.company}</Text>
+          )}
+        </>
+      )}
     </View>
   );
 }

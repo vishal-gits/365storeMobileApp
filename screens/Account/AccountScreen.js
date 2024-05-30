@@ -10,7 +10,7 @@ const AccountScreen = ({ navigation }) => {
   const { customer } = useCustomerContext();
 
   const customerId = customer?.id;
-  console.log(customerId, "----from AccountScreen");
+  // console.log(customerId, "----from AccountScreen");
   const [mode, setMode] = useState("Login");
 
   useEffect(() => {
@@ -21,8 +21,8 @@ const AccountScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {mode === "Login" && <Login {...{ setMode, navigation }} />}
-      {mode === "Register" && <Register {...{ setMode, navigation }} />}
+      {mode === "Login" && <Login {...{ setMode }} />}
+      {mode === "Register" && <Register {...{ setMode }} />}
     </View>
     // <>
     //   {customerId ? (

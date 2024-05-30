@@ -12,11 +12,14 @@ const ACTIONS = {
 const CustomerReducer = (customer, action) => {
   switch (action.type) {
     case ACTIONS.UPDATE_CUSTOMER:
-      // console.log(action.payload, "-----this is from customer store");
+      console.log(action.payload, "-----this is from customer store");
       return { ...customer, ...action.payload };
     case ACTIONS.DELETE_CUSTOMER:
-      // console.log("in delte_customer");
-      return {};
+      console.log("in delte_customer");
+      Object.keys(customer).forEach((key) => {
+        delete customer[key];
+      });
+      return;
     default:
       return customer;
   }
